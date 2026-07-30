@@ -4,6 +4,6 @@
 
 @layer base {
   body {
-    @apply bg-slate-50 text-slate-900 antialiased font-sans selection:bg-sky-100 selection:text-sky-900;
+    @apply bg-[#f4f5f8] text-slate-900 antialiased font-sans selection:bg-purple-100 selection:text-purple-900;
   }
 }

@@ -1,13 +1,17 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { QueryProvider } from "@/components/providers/QueryProvider";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+const jakarta = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+  variable: "--font-plus-jakarta",
+});
 
 export const metadata: Metadata = {
-  title: "DeskWise — Hotel Service Management Dashboard",
-  description: "Dashboard terpusat pengelolaan guest requests dan layanan hotel secara cerdas, intuitif, dan efisien.",
+  title: "DeskWise — Hotel Service Management",
+  description: "Panel pengelolaan layanan tamu hotel yang cepat, ramah, dan efisien.",
 };
 
 export default function RootLayout({
@@ -16,8 +20,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="id" className={inter.variable}>
-      <body className="min-h-screen bg-slate-50 font-sans text-slate-900 antialiased">
+    <html lang="id" className={jakarta.variable}>
+      <body className="min-h-screen bg-[#f4f5f8] font-sans text-slate-900 antialiased selection:bg-purple-100 selection:text-purple-900">
         <QueryProvider>{children}</QueryProvider>
       </body>
     </html>

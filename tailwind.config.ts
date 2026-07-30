@@ -9,25 +9,28 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ["var(--font-plus-jakarta)", "sans-serif"],
+      },
       colors: {
-        brand: {
-          50: "#f0f9ff",
-          100: "#e0f2fe",
-          500: "#0284c7",
-          600: "#0284c7",
-          700: "#0369a1",
-          900: "#0c4a6e",
+        darkside: {
+          900: "#14141f",
+          800: "#181825",
+          700: "#222234",
+          600: "#2b2b3f",
         },
-        surface: {
-          light: "#f8fafc",
-          card: "#ffffff",
-          border: "#e2e8f0",
+        accent: {
+          50: "#f5f3ff",
+          100: "#ede9fe",
+          500: "#8b5cf6",
+          600: "#7c3aed",
+          700: "#6d28d9",
         },
       },
       borderRadius: {
-        lg: "0.75rem",
-        md: "0.5rem",
-        sm: "0.375rem",
+        "3xl": "1.5rem",
+        "2xl": "1.25rem",
+        xl: "1rem",
       },
     },
   },

@@ -58,27 +58,27 @@ export default function AdminManagementPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
-              Manajemen Akun Staf Admin
+            <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">
+              Manajemen Tim Admin
             </h1>
-            <span className="px-2 py-0.5 text-xs font-bold bg-purple-100 text-purple-800 rounded-md flex items-center gap-1">
+            <span className="px-2.5 py-0.5 text-[10px] font-bold bg-violet-100 text-violet-700 rounded-full flex items-center gap-1">
               <ShieldCheck className="w-3 h-3" />
-              SUPER_ADMIN
+              Super Admin
             </span>
           </div>
-          <p className="text-sm text-slate-500 mt-1">
-            Kelola pembuatan dan penghapusan akun staf yang berhak mengakses dashboard operasional.
+          <p className="text-xs text-slate-500 font-medium mt-1">
+            Kelola pembuatan dan hak akses akun staf pengelola aplikasi DeskWise.
           </p>
         </div>
 
-        <Button onClick={() => setIsModalOpen(true)} className="self-start sm:self-auto">
+        <Button onClick={() => setIsModalOpen(true)} className="self-start sm:self-auto rounded-full">
           <UserPlus className="w-4 h-4 mr-2" />
           Tambah Staf Admin
         </Button>
       </div>
 
       {isLoading ? (
-        <Skeleton className="h-64 w-full rounded-xl" />
+        <Skeleton className="h-64 w-full rounded-2xl" />
       ) : (
         <AdminUserTable
           admins={admins}

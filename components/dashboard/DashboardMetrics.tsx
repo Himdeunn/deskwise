@@ -12,46 +12,46 @@ export const DashboardMetrics: React.FC<DashboardMetricsProps> = ({ metrics }) =
     new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", maximumFractionDigits: 0 }).format(val);
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
       <MetricCard
-        title="Tamu Aktif"
+        title="Tamu Menginap"
         value={metrics.totalActiveGuests}
-        subtitle="Memiliki setidaknya 1 pesanan"
+        subtitle="Tamu dengan request aktif"
         icon={Users}
-        variant="info"
+        variant="purple"
       />
       <MetricCard
-        title="Pesanan Pending"
+        title="Perlu Ditangani"
         value={metrics.pendingOrdersCount}
-        subtitle="Membutuhkan penanganan"
+        subtitle="Pesanan belum selesai"
         icon={Clock}
         variant="warning"
       />
       <MetricCard
-        title="SLA Breach (>15m)"
+        title="Lewat SLA (>15m)"
         value={metrics.slaBreachCount}
-        subtitle="Pesanan 'New' belum di-ack"
+        subtitle="Pesanan baru terlambat di-ack"
         icon={ShieldAlert}
         variant={metrics.slaBreachCount > 0 ? "danger" : "neutral"}
       />
       <MetricCard
-        title="Pendapatan Hari Ini"
+        title="Pemasukan Hari Ini"
         value={formatIDR(metrics.todayRevenue)}
-        subtitle="Total transaksi terbayar"
+        subtitle="Total transaksi lunas"
         icon={DollarSign}
         variant="success"
       />
       <MetricCard
         title="Pesanan Selesai"
         value={metrics.completedOrdersCount}
-        subtitle="Layanan berhasil diproses"
+        subtitle="Berhasil dilayani staf"
         icon={CheckCircle2}
         variant="success"
       />
       <MetricCard
-        title="Rata-rata Nilai Order"
+        title="Rata-Rata Order"
         value={formatIDR(metrics.avgOrderValue)}
-        subtitle="Per transaksi terbayar"
+        subtitle="Nilai per transaksi"
         icon={TrendingUp}
         variant="neutral"
       />

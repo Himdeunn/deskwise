@@ -24,7 +24,7 @@ export default function DashboardOverviewPage() {
     try {
       await updateStatusMutation.mutateAsync({ orderId, status: newStatus });
     } catch (err: any) {
-      alert(err.message || "Gagal mengupdate status pesanan.");
+      alert(err.message || "Gagal memperbarui status pesanan.");
     }
   };
 
@@ -33,27 +33,27 @@ export default function DashboardOverviewPage() {
       {/* Header Section */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
-            Dashboard Operasional Staf
+          <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">
+            Ringkasan Operasional Staf
           </h1>
-          <p className="text-sm text-slate-500 mt-1">
-            Pantau dan kelola permintaan layanan tamu hotel secara terpusat & real-time.
+          <p className="text-xs text-slate-500 font-medium mt-1">
+            Pantau dan tindak lanjuti permintaan kamar tamu secara langsung.
           </p>
         </div>
         <button
           onClick={() => refetch()}
-          className="inline-flex items-center gap-2 text-xs font-semibold px-3 py-2 bg-white border border-slate-200 rounded-lg text-slate-700 hover:bg-slate-50 transition-colors self-start sm:self-auto shadow-xs"
+          className="inline-flex items-center gap-2 text-xs font-bold px-4 py-2.5 bg-white border border-slate-200/80 rounded-full text-slate-700 hover:bg-slate-50 transition-all shadow-xs hover:shadow-sm"
         >
-          <RefreshCw className="h-3.5 w-3.5 text-sky-600" />
-          Refresh Data
+          <RefreshCw className="h-3.5 w-3.5 text-violet-600" />
+          Perbarui Data
         </button>
       </div>
 
       {/* Metrics Section */}
       {isLoading ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {[...Array(6)].map((_, i) => (
-            <Skeleton key={i} className="h-28 w-full rounded-xl" />
+            <Skeleton key={i} className="h-28 w-full rounded-2xl" />
           ))}
         </div>
       ) : (
@@ -82,16 +82,16 @@ export default function DashboardOverviewPage() {
       {/* Order Table Section */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <h2 className="text-lg font-bold text-slate-900">Daftar Order Layanan</h2>
-          <span className="text-xs text-slate-500 font-medium">
-            Total: {orders.length} pesanan
+          <h2 className="text-lg font-extrabold text-slate-900">Daftar Request Tamu</h2>
+          <span className="text-xs text-slate-500 font-bold px-3 py-1 bg-white rounded-full border border-slate-200/60 shadow-xs">
+            {orders.length} pesanan
           </span>
         </div>
 
         {isError ? (
-          <div className="p-6 rounded-xl bg-rose-50 border border-rose-200 text-center text-rose-700 text-sm space-y-2">
+          <div className="p-6 rounded-2xl bg-rose-50 border border-rose-200 text-center text-rose-700 text-xs font-medium space-y-2">
             <AlertCircle className="h-6 w-6 mx-auto text-rose-500" />
-            <p>Terjadi kesalahan saat memuat data pesanan dari server.</p>
+            <p>Gagal mengambil data pesanan. Silakan periksa koneksi Anda.</p>
             <button
               onClick={() => refetch()}
               className="text-xs font-bold text-rose-800 underline hover:no-underline"
@@ -100,7 +100,7 @@ export default function DashboardOverviewPage() {
             </button>
           </div>
         ) : isLoading ? (
-          <Skeleton className="h-64 w-full rounded-xl" />
+          <Skeleton className="h-64 w-full rounded-2xl" />
         ) : (
           <OrderTable
             orders={orders}
