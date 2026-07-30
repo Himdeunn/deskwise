@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { Suspense } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useOrders } from "@/features/orders/hooks/useOrders";
@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/Button";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { PlusCircle, CheckCircle2 } from "lucide-react";
 
-export default function MyOrdersPage() {
+function MyOrdersContent() {
   const searchParams = useSearchParams();
   const createdSuccess = searchParams.get("created") === "true";
 
@@ -55,5 +55,13 @@ export default function MyOrdersPage() {
         <OrderTable orders={orders} isStaff={false} />
       )}
     </div>
+  );
+}
+
+export default function MyOrdersPage() {
+  return (
+    <Suspense fallback={<Skeleton className="h-96 w-full rounded-xl" />}>
+      <MyOrdersContent />
+    </Suspense>
   );
 }
