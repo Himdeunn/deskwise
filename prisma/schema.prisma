@@ -1,0 +1,66 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  SUPER_ADMIN
+  ADMIN
+  CUSTOMER
+}
+
+enum OrderStatus {
+  New
+  Acknowledged
+  InProgress
+  Completed
+  Cancelled
+}
+
+enum PaymentStatus {
+  Paid
+  Pending
+  Failed
+}
+
+enum ServiceType {
+  RoomService
+  Housekeeping
+  Laundry
+  ExtraBed
+  SpaMassage
+}
+
+model User {
+  id            String   @id @default(cuid())
+  name          String
+  email         String   @unique
+  passwordHash  String
+  role          Role     @default(CUSTOMER)
+  roomNumber    String?  // hanya relevan untuk role CUSTOMER
+  createdAt     DateTime @default(now())
+  
+  orders        Order[]  @relation("GuestOrders")
+  handledOrders Order[]  @relation("HandledOrders")
+}
+
+model Order {
+  id             String        @id @default(cuid())
+  guestId        String
+  guest          User          @relation("GuestOrders", fields: [guestId], references: [id], onDelete: Cascade)
+  roomNumber     String
+  service        ServiceType
+  quantity       Int           @default(1)
+  amount         Float
+  specialRequest String?
+  status         OrderStatus   @default(New)
+  paymentStatus  PaymentStatus @default(Pending)
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  handledById    String?
+  handledBy      User?         @relation("HandledOrders", fields: [handledById], references: [id])
+}
