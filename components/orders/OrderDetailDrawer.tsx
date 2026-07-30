@@ -87,7 +87,7 @@ export const OrderDetailDrawer: React.FC<OrderDetailDrawerProps> = ({
           <div className="space-y-1">
             <p className="text-xs font-semibold text-slate-600">Catatan / Permintaan Khusus:</p>
             <div className="p-3 bg-amber-50/60 border border-amber-200/80 rounded-lg text-slate-700 italic text-xs">
-              "{order.specialRequest}"
+              &quot;{order.specialRequest}&quot;
             </div>
           </div>
         )}
