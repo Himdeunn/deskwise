@@ -97,11 +97,19 @@ cd deskwise
 bun install
 ```
 
-### 3. Environment Variables (`.env`)
-Create a `.env` file in the root directory:
+### 3. Environment Variables Configuration
+Copy `.env.example` to `.env` or create a `.env` file in the root directory:
+```bash
+cp .env.example .env
+```
+
+Configure your environment variables as shown below:
 ```env
-DATABASE_URL="postgresql://neondb_owner:npg_Ziqjvzc0a2Uf@ep-green-poetry-ayftud1i-pooler.c-5.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
-NEXTAUTH_SECRET="deskwise-secret-key-production-grade-2026-cmpnion"
+# Database Connection (Neon PostgreSQL or local PostgreSQL)
+DATABASE_URL="postgresql://user:password@host:5432/dbname?sslmode=require"
+
+# NextAuth Configuration
+NEXTAUTH_SECRET="your-nextauth-secret-key-here"
 NEXTAUTH_URL="http://localhost:3000"
 ```
 
