@@ -36,3 +36,11 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Internal planning & assessment docs (Excluded from Git tracking)
+cmpnion-assessment.md
+deskwise-idea.md
+docs/
+interview_prep.md
+technical_decisions.md
+project_overview.md
