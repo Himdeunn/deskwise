@@ -11,7 +11,8 @@ import {
   ShoppingBag,
   PlusCircle,
   Hotel,
-  Shield,
+  Settings,
+  ListOrdered,
   Sparkles,
 } from "lucide-react";
 
@@ -29,6 +30,11 @@ export const Sidebar: React.FC = () => {
       href: "/dashboard",
       icon: LayoutDashboard,
     },
+    {
+      name: "Daftar Request",
+      href: "/dashboard/orders",
+      icon: ListOrdered,
+    },
   ];
 
   if (isSuperAdmin) {
@@ -38,6 +44,12 @@ export const Sidebar: React.FC = () => {
       icon: Users,
     });
   }
+
+  staffNav.push({
+    name: "Profil & Pengaturan",
+    href: "/profile",
+    icon: Settings,
+  });
 
   const customerNav = [
     {
@@ -50,6 +62,11 @@ export const Sidebar: React.FC = () => {
       href: "/my-orders/new",
       icon: PlusCircle,
     },
+    {
+      name: "Profil & Pengaturan",
+      href: "/profile",
+      icon: Settings,
+    },
   ];
 
   const items = isStaff ? staffNav : customerNav;
@@ -57,7 +74,7 @@ export const Sidebar: React.FC = () => {
   return (
     <aside className="w-64 shrink-0 bg-white border-r border-slate-100 sticky top-0 h-screen overflow-y-auto p-5 flex flex-col justify-between z-20">
       <div className="space-y-6">
-        {/* Brand Logo Header (Donezo style) */}
+        {/* Brand Logo Header */}
         <div className="flex items-center gap-3 px-2 pt-1">
           <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-[#0F3D91] text-white shadow-md shadow-blue-900/20">
             <Hotel className="h-5 w-5" />
@@ -71,7 +88,7 @@ export const Sidebar: React.FC = () => {
         {/* Navigation Items */}
         <div className="space-y-1.5 pt-4">
           <div className="px-3 pb-2 text-[11px] font-bold uppercase tracking-wider text-slate-400">
-            Menu
+            Menu Utama
           </div>
           {items.map((item) => {
             const Icon = item.icon;
@@ -101,7 +118,7 @@ export const Sidebar: React.FC = () => {
         </div>
       </div>
 
-      {/* Footer Role Card (Donezo style bottom card) */}
+      {/* Footer Role Card */}
       <div className="p-4 rounded-2xl bg-[#f0f5ff] border border-[#BBD4FF]/50 space-y-1.5">
         <div className="flex items-center gap-2 text-[#1A73E8]">
           <Sparkles className="h-4 w-4" />

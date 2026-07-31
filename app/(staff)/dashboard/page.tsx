@@ -1,44 +1,39 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import Link from "next/link";
-import { useOrders, useUpdateOrderStatus } from "@/features/orders/hooks/useOrders";
+import { useOrders } from "@/features/orders/hooks/useOrders";
 import { computeMetrics } from "@/features/orders/utils/computeMetrics";
 import { DashboardMetrics } from "@/components/dashboard/DashboardMetrics";
 import { TopServicesList } from "@/components/dashboard/TopServicesList";
-import { OrderFilterBar } from "@/components/orders/OrderFilterBar";
-import { OrderTable } from "@/components/orders/OrderTable";
+import { OrderStatusBadge } from "@/components/orders/OrderStatusBadge";
+import { SlaBadge } from "@/components/orders/SlaBadge";
 import { Skeleton } from "@/components/ui/Skeleton";
-import { AlertCircle, RefreshCw, Plus } from "lucide-react";
+import { RefreshCw, ArrowRight, ShieldAlert } from "lucide-react";
 
 export default function DashboardOverviewPage() {
-  const [search, setSearch] = useState("");
-  const [status, setStatus] = useState("ALL");
-  const [service, setService] = useState("ALL");
-
-  const { data: orders = [], isLoading, isError, refetch } = useOrders(search, status, service);
-  const updateStatusMutation = useUpdateOrderStatus();
+  const { data: orders = [], isLoading, isError, refetch } = useOrders();
 
   const { metrics, topServices } = computeMetrics(orders);
 
-  const handleUpdateStatus = async (orderId: string, newStatus: any) => {
-    try {
-      await updateStatusMutation.mutateAsync({ orderId, status: newStatus });
-    } catch (err: any) {
-      alert(err.message || "Gagal memperbarui status pesanan.");
-    }
-  };
+  // Pick top 5 recent orders or SLA breach orders for the summary preview
+  const urgentOrders = orders
+    .filter((o) => o.status === "New" || o.status === "Acknowledged")
+    .slice(0, 5);
+
+  const formatIDR = (val: number) =>
+    new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", maximumFractionDigits: 0 }).format(val);
 
   return (
     <div className="space-y-8">
-      {/* Header Section (Donezo style) */}
+      {/* Header Section */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">
             Dashboard
           </h1>
           <p className="text-xs text-slate-500 font-semibold mt-1">
-            Ringkasan data dan kelola permintaan kamar tamu hotel
+            Ringkasan data dan analitik operasional kamar tamu hotel
           </p>
         </div>
 
@@ -50,14 +45,6 @@ export default function DashboardOverviewPage() {
             <RefreshCw className="h-3.5 w-3.5 text-[#1A73E8]" />
             Perbarui Data
           </button>
-
-          <Link
-            href="/my-orders/new"
-            className="inline-flex items-center gap-2 text-xs font-extrabold px-5 py-2.5 bg-[#0F3D91] hover:bg-[#1A73E8] text-white rounded-full shadow-md shadow-blue-900/15 transition-all"
-          >
-            <Plus className="h-4 w-4" />
-            Request Baru
-          </Link>
         </div>
       </div>
 
@@ -72,55 +59,72 @@ export default function DashboardOverviewPage() {
         <DashboardMetrics metrics={metrics} />
       )}
 
-      {/* Analytics & Top Services Section */}
-      {!isLoading && topServices.length > 0 && (
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-2">
-            <OrderFilterBar
-              search={search}
-              setSearch={setSearch}
-              status={status}
-              setStatus={setStatus}
-              service={service}
-              setService={setService}
-            />
-          </div>
-          <div>
-            <TopServicesList stats={topServices} />
-          </div>
-        </div>
-      )}
+      {/* Analytics & Summary Section */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Urgent Orders Preview Card */}
+        <div className="lg:col-span-2 bg-white rounded-3xl p-6 border border-slate-100 shadow-xs space-y-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <div className="h-9 w-9 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center">
+                <ShieldAlert className="h-5 w-5" />
+              </div>
+              <div>
+                <h3 className="text-base font-extrabold text-[#0F3D91]">Request Perlu Penanganan</h3>
+                <p className="text-xs text-slate-500 font-medium">Ringkasan pesanan baru & SLA breach</p>
+              </div>
+            </div>
 
-      {/* Order Table Section */}
-      <div className="space-y-4">
-        <div className="flex items-center justify-between">
-          <h2 className="text-lg font-extrabold text-[#0F3D91]">Daftar Request Tamu</h2>
-          <span className="text-xs text-[#0F3D91] font-extrabold px-3 py-1 bg-[#f0f5ff] border border-[#BBD4FF]/60 rounded-full shadow-xs">
-            {orders.length} pesanan
-          </span>
-        </div>
-
-        {isError ? (
-          <div className="p-6 rounded-3xl bg-rose-50 border border-rose-200 text-center text-rose-700 text-xs font-semibold space-y-2">
-            <AlertCircle className="h-6 w-6 mx-auto text-rose-500" />
-            <p>Gagal mengambil data pesanan. Silakan periksa koneksi Anda.</p>
-            <button
-              onClick={() => refetch()}
-              className="text-xs font-bold text-rose-800 underline hover:no-underline"
+            <Link
+              href="/dashboard/orders"
+              className="inline-flex items-center gap-1.5 text-xs font-extrabold text-[#1A73E8] hover:underline"
             >
-              Coba Lagi
-            </button>
+              <span>Lihat Semua</span>
+              <ArrowRight className="h-4 w-4" />
+            </Link>
           </div>
-        ) : isLoading ? (
-          <Skeleton className="h-64 w-full rounded-3xl" />
-        ) : (
-          <OrderTable
-            orders={orders}
-            isStaff={true}
-            onUpdateStatus={handleUpdateStatus}
-            isUpdating={updateStatusMutation.isPending}
-          />
-        )}
+
+          {isLoading ? (
+            <Skeleton className="h-40 w-full rounded-2xl" />
+          ) : urgentOrders.length === 0 ? (
+            <div className="py-8 text-center text-xs text-slate-500 font-medium bg-slate-50 rounded-2xl border border-dashed border-slate-200">
+              Tidak ada pesanan baru yang membutuhkan penanganan saat ini.
+            </div>
+          ) : (
+            <div className="space-y-2.5">
+              {urgentOrders.map((ord) => (
+                <div
+                  key={ord.id}
+                  className="flex items-center justify-between p-3.5 bg-[#f8fafc] rounded-2xl border border-slate-100 hover:bg-white hover:shadow-xs transition-all"
+                >
+                  <div className="flex items-center gap-3">
+                    <span className="px-3 py-1 text-xs font-extrabold bg-[#f0f5ff] text-[#0F3D91] rounded-full">
+                      Kamar {ord.roomNumber}
+                    </span>
+                    <div>
+                      <p className="text-xs font-bold text-slate-900">{ord.service} ({ord.quantity}x)</p>
+                      <p className="text-[11px] text-slate-500">{ord.guest.name}</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <OrderStatusBadge status={ord.status} />
+                    <SlaBadge createdAt={ord.createdAt} status={ord.status} />
+                    <span className="text-xs font-extrabold text-[#0F3D91] ml-2">{formatIDR(ord.amount)}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Top Demands Chart */}
+        <div>
+          {isLoading ? (
+            <Skeleton className="h-64 w-full rounded-3xl" />
+          ) : (
+            <TopServicesList stats={topServices} />
+          )}
+        </div>
       </div>
     </div>
   );

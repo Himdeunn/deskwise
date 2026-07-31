@@ -11,10 +11,11 @@ export default auth((req) => {
   const isDashboardRoute = nextUrl.pathname.startsWith("/dashboard");
   const isAdminMgmtRoute = nextUrl.pathname.startsWith("/dashboard/admin-management");
   const isCustomerRoute = nextUrl.pathname.startsWith("/my-orders");
+  const isProfileRoute = nextUrl.pathname.startsWith("/profile");
 
   // Jika belum login dan mencoba mengakses route yang diproteksi
   if (!isLoggedIn) {
-    if (isDashboardRoute || isCustomerRoute) {
+    if (isDashboardRoute || isCustomerRoute || isProfileRoute) {
       const loginUrl = new URL("/login", nextUrl.origin);
       loginUrl.searchParams.set("callbackUrl", nextUrl.pathname);
       return NextResponse.redirect(loginUrl);
