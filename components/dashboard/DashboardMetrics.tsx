@@ -21,21 +21,25 @@ export const DashboardMetrics: React.FC<DashboardMetricsProps> = ({ metrics }) =
         value={metrics.totalActiveGuests}
         subtitle="Guests with active requests"
         isFeatured={true}
+        href="/dashboard/orders"
       />
       <MetricCard
         title="Pending Orders"
         value={metrics.pendingOrdersCount}
         subtitle="Orders awaiting action"
+        href="/dashboard/orders?status=New"
       />
       <MetricCard
         title="SLA Breach (>15m)"
         value={metrics.slaBreachCount}
         subtitle="Late acknowledgement"
+        href="/dashboard/orders?status=New"
       />
       <MetricCard
         title="Today's Revenue"
         value={formatIDR(metrics.todayRevenue)}
         subtitle="Total paid today"
+        href="/dashboard/orders?status=Completed"
       />
     </div>
   );
