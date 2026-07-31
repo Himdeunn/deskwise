@@ -11,7 +11,12 @@ const jakarta = Plus_Jakarta_Sans({
 
 export const metadata: Metadata = {
   title: "DeskWise — Hotel Service Management",
-  description: "Panel pengelolaan layanan tamu hotel yang cepat, ramah, dan efisien.",
+  description: "Fast, responsive, and intuitive hotel guest service management panel.",
+  icons: {
+    icon: "/logo.png",
+    shortcut: "/logo.png",
+    apple: "/logo.png",
+  },
 };
 
 export default function RootLayout({
@@ -20,8 +25,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="id" className={jakarta.variable}>
-      <body className="min-h-screen bg-[#f4f5f8] font-sans text-slate-900 antialiased selection:bg-purple-100 selection:text-purple-900">
+    <html lang="en" className={jakarta.variable}>
+      <body className="min-h-screen bg-[#f8fafc] font-sans text-slate-900 antialiased selection:bg-[#BBD4FF] selection:text-[#0F3D91]">
         <QueryProvider>{children}</QueryProvider>
       </body>
     </html>

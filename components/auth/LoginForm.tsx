@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
@@ -9,8 +9,7 @@ import { z } from "zod";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import Link from "next/link";
-import { Hotel } from "lucide-react";
-import { useState } from "react";
+import Image from "next/image";
 
 const loginSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
@@ -62,8 +61,8 @@ export const LoginForm: React.FC = () => {
   return (
     <div className="w-full max-w-md bg-white p-8 rounded-3xl shadow-xl border border-slate-100 space-y-6">
       <div className="text-center space-y-2">
-        <div className="inline-flex items-center justify-center h-14 w-14 rounded-2xl bg-[#0F3D91] text-white shadow-lg shadow-blue-900/30 mb-2">
-          <Hotel className="h-7 w-7" />
+        <div className="inline-flex items-center justify-center h-16 w-16 rounded-2xl bg-white border border-slate-200/80 shadow-md shadow-blue-900/10 mb-2 overflow-hidden p-1.5">
+          <Image src="/logo.png" alt="DeskWise Logo" width={56} height={56} className="h-full w-full object-contain" />
         </div>
         <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">DeskWise</h1>
         <p className="text-xs font-medium text-slate-500">

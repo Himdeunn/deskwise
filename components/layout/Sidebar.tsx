@@ -2,6 +2,7 @@
 
 import React, { useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { clsx } from "clsx";
@@ -10,7 +11,6 @@ import {
   Users,
   ShoppingBag,
   PlusCircle,
-  Hotel,
   Settings,
   ListOrdered,
   Sparkles,
@@ -65,8 +65,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
         {/* Brand Logo */}
         <div className="flex items-center justify-between px-2 pt-1">
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-[#0F3D91] text-white shadow-md shadow-blue-900/20 shrink-0">
-              <Hotel className="h-5 w-5" />
+            <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-white border border-slate-200/80 shadow-xs shrink-0 overflow-hidden p-1">
+              <Image src="/logo.png" alt="DeskWise Logo" width={36} height={36} className="h-full w-full object-contain" />
             </div>
             <div>
               <h2 className="text-lg font-extrabold tracking-tight text-[#0F3D91]">DeskWise</h2>
