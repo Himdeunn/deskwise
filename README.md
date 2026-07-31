@@ -31,17 +31,17 @@ The name **DeskWise** is derived from two core concepts:
 DeskWise enforces strict server-side **Role-Based Access Control (RBAC)** via Next.js Middleware and API Route Handlers:
 
 ### 1. Public Landing Page (`/`)
-- **Sticky Header**: Brand logo (`/logo.png`), smooth-scroll links, and dynamic CTA buttons.
+- **Sticky Header**: Brand logo (`/logo.png`), smooth-scroll anchor links, and dynamic CTA buttons (*Sign In*, *Register Guest*, *Dashboard*).
 - **5 Core Sections**:
-  - **Hero Section**: Live Service Monitor card showcase and interactive CTAs.
-  - **About Section**: Core operational pillars (*Clarity*, *Speed*, *Intelligence*, *Financial Audit*) and performance metrics.
-  - **Services Section**: Interactive cards highlighting 5 service categories (*Room Service*, *Housekeeping*, *Laundry*, *Extra Bed*, *Spa & Massage*).
+  - **Hero Section**: Live Service Monitor showcase card and interactive action buttons.
+  - **About Section**: 4 core operational pillars (*Clarity*, *Speed*, *Intelligence*, *Financial Audit*) and performance metrics.
+  - **Services Section**: Interactive cards highlighting 5 hotel service categories (*Room Service*, *Housekeeping*, *Laundry*, *Extra Bed*, *Spa & Massage*).
   - **FAQ Section**: Expandable accordion addressing common operational and guest inquiries.
   - **Contact & Footer Section**: 24/7 helpline cards, direct inquiry form, and brand footer.
 
 ### 2. Staff Dashboard & Management (`/dashboard`)
-- **Operational Metrics**: Active Guests, Pending Orders, SLA Breach Count, Today's Revenue, and Top Services Chart.
-- **Service Requests (`/dashboard/orders`)**: Dedicated page for searching, filtering (status & service type), and updating order lifecycles (*Accept*, *Process*, *Complete*, *Cancel*).
+- **Dashboard Overview (`/dashboard`)**: Real-time KPI metrics displaying **Active Guests**, **Pending Orders**, **SLA Breach (>15m)**, **Completed Orders**, **Revenue Today**, and **Average Order Value**, alongside the **Top Selling Services** progress chart.
+- **Service Requests (`/dashboard/orders`)**: Dedicated page for multi-parameter search (by Guest Name, Room Number, Order ID), filtering (Status & Service Type), sorting, and updating order lifecycles (*Accept*, *Process*, *Complete*, *Cancel*).
 - **Revenue & Financial Analytics (`/dashboard/revenue`)**: Staff-only financial dashboard displaying earnings breakdown by service category, payment collection ratios, and transaction ledger.
 - **Admin Management (`/dashboard/admin-management`)**: Restricted to `SUPER_ADMIN` for creating, editing, and managing staff accounts.
 
@@ -57,7 +57,7 @@ DeskWise enforces strict server-side **Role-Based Access Control (RBAC)** via Ne
 
 - **Framework**: [Next.js 14 (App Router)](https://nextjs.org/)
 - **Language**: [TypeScript](https://www.typescriptlang.org/) (Strict Mode)
-- **Runtime & Tooling**: [Bun](https://bun.sh/) (Runtime, Package Manager, and Execution Engine)
+- **Runtime, Package Manager & Test Runner**: [Bun](https://bun.sh/)
 - **Styling & Design System**: [Tailwind CSS](https://tailwindcss.com/) with a curated palette (`#0F3D91` Dark Navy, `#1A73E8` Primary Blue, `#BBD4FF` Soft Accent)
 - **Database**: [Neon PostgreSQL](https://neon.tech/) (Serverless Cloud Postgres)
 - **ORM**: [Prisma ORM](https://www.prisma.io/) (Type-safe schema, migrations, and seed scripts)
@@ -123,7 +123,12 @@ bun run db:push
 bun run db:seed
 ```
 
-### 5. Run Development Server
+### 5. Run Unit Tests with Bun
+```bash
+bun test
+```
+
+### 6. Run Development Server
 ```bash
 bun run dev
 ```
@@ -155,7 +160,7 @@ deskwise/
 │   ├── (customer)/             # Guest self-service portal (/my-orders)
 │   ├── api/                    # REST API Route Handlers with Zod validation
 │   ├── profile/                # Universal user profile page
-│   ├── globals.css             # Tailwind CSS global styles & utilities
+│   ├── globals.css             # Tailwind CSS global styles & smooth scrolling
 │   └── page.tsx                # Public 5-section Landing Page
 ├── components/                 # Modular React components & UI primitives
 │   ├── admin/                  # Admin management tables & modals
@@ -169,6 +174,7 @@ deskwise/
 ├── lib/                        # Prisma singleton, NextAuth configuration
 ├── prisma/                     # Database schema & seeding scripts
 ├── public/                     # Static assets (logo.png, favicon.ico)
+├── tests/                      # Bun test suite for core business logic
 └── types/                      # TypeScript definitions & NextAuth type augmentation
 ```
 
@@ -182,7 +188,7 @@ deskwise/
    - **UI State**: Filter values, modal open states, and mobile drawers are kept in local component state (`useState`).
 
 2. **Responsive Mobile Ergonomics**:
-   - Mobile navigation utilizes a slide-in drawer with backdrop overlay.
+   - Mobile navigation utilizes a slide-in drawer with backdrop overlay and smooth animations.
    - Data tables gracefully convert into stacked vertical cards on small screens (`< md`).
    - Order detail drawers act as bottom-sheets on mobile devices.
 
