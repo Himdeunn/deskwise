@@ -1,152 +1,184 @@
-# DeskWise — Hotel Service Management Dashboard
+# DeskWise — Hotel Service Management System
 
 > *"DeskWise — Smarter Desk, Faster Service."*
 
-DeskWise adalah platform **Hotel Service Management Dashboard** modern berbasis Next.js App Router yang dirancang khusus untuk menyederhanakan, memantau, dan mempercepat alur penanganan permintaan layanan tamu (*guest requests*) di hotel secara terpusat.
+DeskWise is a modern, full-stack **Hotel Service Management Dashboard** built with Next.js 14 (App Router), TypeScript, Prisma ORM, Neon PostgreSQL, and Bun. It streamlines, monitors, and accelerates the processing of hotel guest service requests in real time.
 
 ---
 
 ## 📖 Table of Contents
-- [Filosofi & Makna Nama](#-filosofi--makna-nama)
-- [Fitur Utama & Akses Role](#-fitur-utama--akses-role)
-- [Teknologi & Tech Stack](#-teknologi--tech-stack)
-- [Arsitektur & Aturan SLA](#-arsitektur--aturan-sla)
-- [Panduan Instalasi & Jalankan Aplikasi](#-panduan-instalasi--jalankan-aplikasi)
-- [Kredensial Pengujian (Seed Users)](#-kredensial-pengujian-seed-users)
-- [Struktur Direktori](#-struktur-direktori)
+- [Project Overview & Philosophy](#-project-overview--philosophy)
+- [Key Features & Role Access Matrix](#-key-features--role-access-matrix)
+- [Tech Stack & Tooling](#-tech-stack--tooling)
+- [Order Lifecycle & SLA Breach Rules](#-order-lifecycle--sla-breach-rules)
+- [Installation & Local Setup with Bun](#-installation--local-setup-with-bun)
+- [Testing Credentials (Seed Users)](#-testing-credentials-seed-users)
+- [Project Structure](#-project-structure)
+- [Technical Decisions & State Architecture](#-technical-decisions--state-architecture)
 
 ---
 
-## 💡 Filosofi & Makna Nama
+## 💡 Project Overview & Philosophy
 
-Nama **DeskWise** berasal dari perpaduan dua kata utama:
-- **Desk**: Merepresentasikan *front desk* atau meja kerja staf operasional hotel tempat seluruh permintaan tamu bermula dan diproses.
-- **Wise**: Berarti cerdas dan bijaksana. Sistem membantu staf hotel mengambil keputusan cerdas secara cepat — memprioritaskan permintaan mendesak (*urgent*), mengawasi potensi pelanggaran SLA, dan meminimalkan kesalahan manusia.
-
----
-
-## 👥 Fitur Utama & Akses Role
-
-Sistem DeskWise dilengkapi dengan **Role-Based Access Control (RBAC)** ketat di sisi server (Middleware & API Route Handlers):
-
-1. **`SUPER_ADMIN` (Manajemen Puncak / IT Manager)**
-   - Mengakses seluruh statistik operasional hotel.
-   - Mengelola pemrosesan pesanan layanan tamu.
-   - Memiliki menu khusus `/dashboard/admin-management` untuk membuat, mengedit, dan menghapus akun Admin/Staf hotel.
-
-2. **`ADMIN` (Staf Operasional / Front Desk / Guest Relation)**
-   - Mengakses `/dashboard` (Overview Metrik & Order Management).
-   - Memproses siklus status order (*Acknowledge*, *In Progress*, *Complete*, *Cancel*).
-   - Tidak dapat mengelola akun staf lain atau pengaturan sistem global.
-
-3. **`CUSTOMER` (Tamu Hotel)**
-   - Mengakses area mandiri `/my-orders`.
-   - Mengajukan permintaan layanan kamar baru (*Room Service*, *Housekeeping*, *Laundry*, *Extra Bed*, *Spa & Massage*).
-   - Melacak status pesanan pribadi secara real-time tanpa dapat melihat pesanan tamu lain atau dashboard staf.
+The name **DeskWise** is derived from two core concepts:
+- **Desk**: Represents the hotel front desk and operational workstation where all guest requests originate and are processed.
+- **Wise**: Represents operational intelligence. The system assists staff in making fast, informed decisions — prioritizing urgent requests, monitoring SLA breach risks, and auditing financial performance with zero operational clutter.
 
 ---
 
-## 🛠 Teknologi & Tech Stack
+## 👥 Key Features & Role Access Matrix
+
+DeskWise enforces strict server-side **Role-Based Access Control (RBAC)** via Next.js Middleware and API Route Handlers:
+
+### 1. Public Landing Page (`/`)
+- **Sticky Header**: Brand logo (`/logo.png`), smooth-scroll links, and dynamic CTA buttons.
+- **5 Core Sections**:
+  - **Hero Section**: Live Service Monitor card showcase and interactive CTAs.
+  - **About Section**: Core operational pillars (*Clarity*, *Speed*, *Intelligence*, *Financial Audit*) and performance metrics.
+  - **Services Section**: Interactive cards highlighting 5 service categories (*Room Service*, *Housekeeping*, *Laundry*, *Extra Bed*, *Spa & Massage*).
+  - **FAQ Section**: Expandable accordion addressing common operational and guest inquiries.
+  - **Contact & Footer Section**: 24/7 helpline cards, direct inquiry form, and brand footer.
+
+### 2. Staff Dashboard & Management (`/dashboard`)
+- **Operational Metrics**: Active Guests, Pending Orders, SLA Breach Count, Today's Revenue, and Top Services Chart.
+- **Service Requests (`/dashboard/orders`)**: Dedicated page for searching, filtering (status & service type), and updating order lifecycles (*Accept*, *Process*, *Complete*, *Cancel*).
+- **Revenue & Financial Analytics (`/dashboard/revenue`)**: Staff-only financial dashboard displaying earnings breakdown by service category, payment collection ratios, and transaction ledger.
+- **Admin Management (`/dashboard/admin-management`)**: Restricted to `SUPER_ADMIN` for creating, editing, and managing staff accounts.
+
+### 3. Guest Self-Service Portal (`/my-orders`)
+- Restricted to `CUSTOMER` role for creating new hotel service requests (`/my-orders/new`) and tracking personal order statuses in real time.
+
+### 4. Universal Profile & Settings (`/profile`)
+- Accessible by all authenticated roles to update full name and password with Zod schema validation.
+
+---
+
+## 🛠 Tech Stack & Tooling
 
 - **Framework**: [Next.js 14 (App Router)](https://nextjs.org/)
-- **Bahasa**: [TypeScript](https://www.typescriptlang.org/) (Strict Mode)
-- **Runtime & Tooling**: [Bun](https://bun.sh/) (Package Manager, Execution Engine, DAN Test Runner)
-- **Styling**: [Tailwind CSS](https://tailwindcss.com/) (Tema *Full Responsive Modern Minimalist and Simplicity*)
+- **Language**: [TypeScript](https://www.typescriptlang.org/) (Strict Mode)
+- **Runtime & Tooling**: [Bun](https://bun.sh/) (Runtime, Package Manager, and Execution Engine)
+- **Styling & Design System**: [Tailwind CSS](https://tailwindcss.com/) with a curated palette (`#0F3D91` Dark Navy, `#1A73E8` Primary Blue, `#BBD4FF` Soft Accent)
 - **Database**: [Neon PostgreSQL](https://neon.tech/) (Serverless Cloud Postgres)
-- **ORM**: [Prisma ORM](https://www.prisma.io/) (Type-safe schema, migrations & seed)
-- **Autentikasi**: [NextAuth.js v5](https://authjs.dev/) Credentials Provider (`bcryptjs` password hashing)
-- **State Management**: [TanStack Query v5](https://tanstack.com/query) + React Hooks
-- **Validasi Schema**: [Zod](https://zod.dev/) + React Hook Form
+- **ORM**: [Prisma ORM](https://www.prisma.io/) (Type-safe schema, migrations, and seed scripts)
+- **Authentication**: [NextAuth.js v5](https://authjs.dev/) Credentials Provider (`bcryptjs` password hashing)
+- **State & Data Fetching**: [TanStack Query v5](https://tanstack.com/query) + React Hooks
+- **Form & Validation**: [React Hook Form](https://react-hook-form.com/) + [Zod](https://zod.dev/)
 
 ---
 
-## ⏱ Arsitektur & Aturan SLA
+## ⏱ Order Lifecycle & SLA Breach Rules
 
-### Lifecycle Order Status
+### Order Lifecycle State Machine
 ```
 [ New ] ---> [ Acknowledged ] ---> [ In Progress ] ---> [ Completed ]
    |                  |                    |
    +------------------+--------------------+---> [ Cancelled ]
 ```
 
-### Aturan SLA (Service Level Agreement) Breach
-- Setiap pesanan dengan status **`New`** yang tidak diakui (*acknowledged*) oleh staf dalam waktu **> 15 menit** sejak dibuat akan memicu indikator visual **`URGENT SLA Breach`** (badge berkedip merah lembut dengan durasi keterlambatan).
-- Indikator ini langsung terlihat pada Dashboard Staf untuk penanganan prioritas tinggi.
+### Service Level Agreement (SLA) Rules
+- Any order in **`New`** status that is not acknowledged by hotel staff within **15 minutes** of creation automatically triggers an **`URGENT SLA Breach (>15m)`** pulsing visual alert.
+- Highlighted prominently on the Staff Dashboard and Order Management list for immediate priority response.
 
 ---
 
-## 🚀 Panduan Instalasi & Jalankan Aplikasi
+## 🚀 Installation & Local Setup with Bun
 
-### 1. Prasyarat
-Pastikan Anda telah menginstall **Bun** di komputer Anda:
+### 1. Prerequisites
+Ensure **Bun** is installed on your environment:
 ```bash
 bun --version
 ```
 
-### 2. Kloning Repositori & Install Dependensi
+### 2. Clone Repository & Install Dependencies
 ```bash
 git clone https://github.com/Himdeunn/deskwise.git
 cd deskwise
 bun install
 ```
 
-### 3. Konfigurasi Environment Variables (`.env`)
-Buat berkas `.env` di direktori utama:
+### 3. Environment Variables (`.env`)
+Create a `.env` file in the root directory:
 ```env
 DATABASE_URL="postgresql://neondb_owner:npg_Ziqjvzc0a2Uf@ep-green-poetry-ayftud1i-pooler.c-5.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
 NEXTAUTH_SECRET="deskwise-secret-key-production-grade-2026-cmpnion"
 NEXTAUTH_URL="http://localhost:3000"
 ```
 
-### 4. Setup Database & Seeding
-Sinkronkan skema database ke Neon PostgreSQL dan jalankan penyemaian data contoh:
+### 4. Database Setup & Seeding
+Push the Prisma schema to Neon PostgreSQL and seed test accounts and orders:
 ```bash
-# Push skema Prisma ke database Neon PostgreSQL
+# Push Prisma schema to database
 bun run db:push
 
-# Seed data pengguna (3 role) dan data order awal (termasuk contoh SLA breach)
+# Seed test users and initial orders
 bun run db:seed
 ```
 
-### 5. Jalankan Server Pengembang
+### 5. Run Development Server
 ```bash
 bun run dev
 ```
-Akses aplikasi melalui browser pada `http://localhost:3000`.
+Open your browser and navigate to `http://localhost:3000`.
 
 ---
 
-## 🔑 Kredensial Pengujian (Seed Users)
+## 🔑 Testing Credentials (Seed Users)
 
-Gunakan akun berikut untuk menguji berbagai tingkat hak akses:
+Test the application across different access levels using these pre-configured seed accounts (Password for all: `Password123!`):
 
-| Role | Email | Password | Keterangan |
+| Role | Email | Password | Access & Purpose |
 | :--- | :--- | :--- | :--- |
-| **`SUPER_ADMIN`** | `superadmin@deskwise.com` | `Password123!` | Akses Penuh & Manajemen Admin |
-| **`ADMIN`** | `admin.budi@deskwise.com` | `Password123!` | Staf Front Desk Operasional |
-| **`ADMIN`** | `admin.siti@deskwise.com` | `Password123!` | Staf Guest Relation |
-| **`CUSTOMER`** | `guest.ahmad@gmail.com` | `Password123!` | Tamu Kamar 101 |
-| **`CUSTOMER`** | `guest.dewi@gmail.com` | `Password123!` | Tamu Kamar 204 |
+| **`SUPER_ADMIN`** | `superadmin@deskwise.com` | `Password123!` | Full Access & Staff Management |
+| **`ADMIN`** | `admin.budi@deskwise.com` | `Password123!` | Front Desk & Order Operations |
+| **`ADMIN`** | `admin.siti@deskwise.com` | `Password123!` | Guest Relations Staff |
+| **`CUSTOMER`** | `guest.ahmad@gmail.com` | `Password123!` | Room 101 Guest |
+| **`CUSTOMER`** | `guest.dewi@gmail.com` | `Password123!` | Room 204 Guest |
 
 ---
 
-## 📂 Struktur Direktori
+## 📂 Project Structure
 
 ```
 deskwise/
-├── app/                        # Next.js App Router (pages, layouts, & API routes)
-│   ├── (auth)/                 # Route publik login & register
-│   ├── (staff)/                # Dashboard operasional staf & super admin
-│   ├── (customer)/             # Portal self-service order tamu
-│   └── api/                    # Server-side API route handlers dengan otorisasi Zod
-├── components/                 # Standard UI components & design system primitives
-│   ├── ui/                     # Button, Card, Badge, Input, Select, Modal, Skeleton
-│   ├── orders/                 # Table, Filter, Detail Drawer, Status Badges
-│   ├── dashboard/              # Metric Cards, Top Services Chart
-│   └── layout/                 # Navbar & Responsive Sidebar per role
-├── features/                   # Core business domain logic & TanStack Query hooks
-├── lib/                        # Prisma client singleton, NextAuth config
-├── prisma/                     # Database schema & seed script
-├── types/                      # TypeScript definitions & NextAuth type augmentation
-└── docs/                       # PRD & Arsitektur Dokumen
+├── app/                        # Next.js App Router (pages, layouts, API routes)
+│   ├── (auth)/                 # Public login & registration routes
+│   ├── (staff)/                # Staff dashboard (/dashboard, /orders, /revenue, /admin-management)
+│   ├── (customer)/             # Guest self-service portal (/my-orders)
+│   ├── api/                    # REST API Route Handlers with Zod validation
+│   ├── profile/                # Universal user profile page
+│   ├── globals.css             # Tailwind CSS global styles & utilities
+│   └── page.tsx                # Public 5-section Landing Page
+├── components/                 # Modular React components & UI primitives
+│   ├── admin/                  # Admin management tables & modals
+│   ├── auth/                   # LoginForm & RegisterForm
+│   ├── dashboard/              # Metric Cards & Top Services List
+│   ├── landing/                # Landing Navbar, Hero, About, Services, FAQ, Contact
+│   ├── layout/                 # Navbar & Responsive Sidebar per role
+│   ├── orders/                 # Order Table, Filter Bar, Detail Drawer, SLA Badges
+│   └── ui/                     # Primitives (Button, Card, Badge, Input, Select, Modal, Skeleton)
+├── features/                   # Domain hooks & TanStack Query fetchers
+├── lib/                        # Prisma singleton, NextAuth configuration
+├── prisma/                     # Database schema & seeding scripts
+├── public/                     # Static assets (logo.png, favicon.ico)
+└── types/                      # TypeScript definitions & NextAuth type augmentation
 ```
+
+---
+
+## 🏛 Technical Decisions & State Architecture
+
+1. **State Management**:
+   - **Server / Async State**: Managed entirely by **TanStack Query** for automatic caching, refetching, and query invalidation upon status mutations.
+   - **Form State**: Managed via **React Hook Form** + **Zod** to eliminate unnecessary parent re-renders and enforce strict validation.
+   - **UI State**: Filter values, modal open states, and mobile drawers are kept in local component state (`useState`).
+
+2. **Responsive Mobile Ergonomics**:
+   - Mobile navigation utilizes a slide-in drawer with backdrop overlay.
+   - Data tables gracefully convert into stacked vertical cards on small screens (`< md`).
+   - Order detail drawers act as bottom-sheets on mobile devices.
+
+3. **Production Readiness & Security**:
+   - Middleware-enforced authorization rules.
+   - Passwords hashed using `bcrypt` (10 rounds).
+   - Zero synthetic filler copy — 100% humanized, actionable microcopy.
