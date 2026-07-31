@@ -47,9 +47,9 @@ export default function DashboardOverviewPage() {
 
       {/* Metric Cards */}
       {isLoading ? (
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-5">
           {[...Array(6)].map((_, i) => (
-            <Skeleton key={i} className="h-28 sm:h-32 w-full rounded-3xl" />
+            <Skeleton key={i} className="h-32 w-full rounded-3xl" />
           ))}
         </div>
       ) : (

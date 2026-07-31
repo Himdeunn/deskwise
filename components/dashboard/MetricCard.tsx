@@ -21,16 +21,16 @@ export const MetricCard: React.FC<MetricCardProps> = ({
   const CardContent = (
     <div
       className={clsx(
-        "rounded-3xl p-5 sm:p-6 flex flex-col justify-between transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 relative overflow-hidden min-h-[130px] group cursor-pointer",
+        "rounded-3xl p-5 sm:p-6 flex flex-col justify-between transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 relative overflow-hidden min-h-[130px] group cursor-pointer h-full",
         isFeatured
           ? "bg-[#0F3D91] text-white shadow-lg shadow-blue-900/15"
           : "bg-white text-slate-900 border border-slate-100 shadow-xs"
       )}
     >
-      <div className="flex items-start justify-between mb-4 sm:mb-6 gap-2">
+      <div className="flex items-start justify-between mb-3 sm:mb-5 gap-2">
         <span
           className={clsx(
-            "text-[10px] sm:text-xs font-bold uppercase tracking-wider leading-tight",
+            "text-[10px] sm:text-xs font-bold uppercase tracking-wider leading-tight min-w-0 truncate",
             isFeatured ? "text-slate-200" : "text-slate-500"
           )}
         >
@@ -48,12 +48,14 @@ export const MetricCard: React.FC<MetricCardProps> = ({
         </div>
       </div>
 
-      <div className="space-y-1">
-        <p className="text-2xl sm:text-3xl font-extrabold tracking-tight leading-none">{value}</p>
+      <div className="space-y-1 min-w-0">
+        <p className="text-xl sm:text-2xl lg:text-3xl font-extrabold tracking-tight leading-none truncate">
+          {value}
+        </p>
         {subtitle && (
           <p
             className={clsx(
-              "text-[11px] sm:text-xs font-semibold mt-1",
+              "text-[11px] sm:text-xs font-semibold mt-1 truncate",
               isFeatured ? "text-slate-200" : "text-slate-500"
             )}
           >
@@ -65,7 +67,7 @@ export const MetricCard: React.FC<MetricCardProps> = ({
   );
 
   if (href) {
-    return <Link href={href}>{CardContent}</Link>;
+    return <Link href={href} className="block h-full">{CardContent}</Link>;
   }
 
   return CardContent;

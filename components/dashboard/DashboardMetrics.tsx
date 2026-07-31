@@ -15,7 +15,7 @@ export const DashboardMetrics: React.FC<DashboardMetricsProps> = ({ metrics }) =
     }).format(val);
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
+    <div className="grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-5">
       <MetricCard
         title="Active Guests"
         value={metrics.totalActiveGuests}
