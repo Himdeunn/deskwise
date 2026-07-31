@@ -23,13 +23,13 @@ export const Navbar: React.FC<NavbarProps> = ({ onMobileMenuOpen }) => {
   };
 
   return (
-    <header className="sticky top-0 z-30 flex h-16 sm:h-20 w-full items-center justify-between px-4 sm:px-6 lg:px-8 bg-[#f8fafc]/90 backdrop-blur-md border-b border-slate-100/60 gap-3">
-      {/* Left: Mobile Hamburger Trigger */}
+    <header className="shrink-0 flex h-16 sm:h-20 w-full items-center justify-between px-4 sm:px-6 lg:px-8 bg-[#f8fafc]/90 backdrop-blur-md border-b border-slate-100/60 gap-3 z-30">
+      {/* Left: Mobile Hamburger */}
       <div className="flex items-center gap-3">
         <MobileMenuButton onClick={onMobileMenuOpen || (() => {})} />
       </div>
 
-      {/* Right: Profile Chip & Logout */}
+      {/* Right: Profile Chip & Sign Out */}
       {session?.user && (
         <div className="flex items-center gap-2 sm:gap-3 shrink-0">
           <div className="flex items-center gap-2 sm:gap-3 bg-white px-2.5 sm:px-3.5 py-1.5 rounded-full border border-slate-200/80 shadow-xs">
@@ -44,8 +44,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onMobileMenuOpen }) => {
                 {session.user.role === "SUPER_ADMIN"
                   ? "Super Admin"
                   : session.user.role === "ADMIN"
-                  ? "Staf Hotel"
-                  : `Kamar ${session.user.roomNumber || ""}`}
+                  ? "Hotel Staff"
+                  : `Room ${session.user.roomNumber || ""}`}
               </span>
             </div>
           </div>
@@ -53,10 +53,10 @@ export const Navbar: React.FC<NavbarProps> = ({ onMobileMenuOpen }) => {
           <button
             onClick={() => signOut({ callbackUrl: "/login" })}
             className="h-9 w-9 sm:w-auto sm:px-3 rounded-full text-slate-500 hover:text-rose-600 hover:bg-white border border-transparent hover:border-slate-200 flex items-center justify-center gap-1.5 transition-all text-xs font-bold"
-            title="Keluar"
+            title="Sign Out"
           >
             <LogOut className="h-4 w-4" />
-            <span className="hidden sm:inline">Keluar</span>
+            <span className="hidden sm:inline">Sign Out</span>
           </button>
         </div>
       )}

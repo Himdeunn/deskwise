@@ -10,13 +10,13 @@ interface EmptyStateProps {
 }
 
 export const EmptyState: React.FC<EmptyStateProps> = ({
-  title = "Tidak ada data ditemukan",
-  description = "Belum ada pesanan atau data yang sesuai dengan kriteria pencarian Anda.",
+  title = "No data found",
+  description = "No orders or records match your current search criteria.",
   actionLabel,
   onAction,
 }) => {
   return (
-    <div className="flex flex-col items-center justify-center py-12 px-4 text-center border-2 border-dashed border-slate-200 rounded-xl bg-slate-50/50">
+    <div className="flex flex-col items-center justify-center py-12 px-4 text-center border-2 border-dashed border-slate-200 rounded-3xl bg-slate-50/50">
       <div className="flex h-12 w-12 items-center justify-center rounded-full bg-slate-100 text-slate-400 mb-3">
         <Inbox className="h-6 w-6" />
       </div>

@@ -11,10 +11,10 @@ import { Card } from "@/components/ui/Card";
 import { User, Shield, KeyRound, CheckCircle2, AlertCircle } from "lucide-react";
 
 const profileSchema = z.object({
-  name: z.string().min(2, "Nama minimal 2 karakter"),
+  name: z.string().min(2, "Name must be at least 2 characters"),
   password: z
     .string()
-    .min(6, "Password minimal 6 karakter")
+    .min(6, "Password must be at least 6 characters")
     .optional()
     .or(z.literal("")),
 });
@@ -54,16 +54,16 @@ export default function ProfilePage() {
       const json = await res.json();
 
       if (!res.ok) {
-        setErrorMessage(json.error || "Gagal memperbarui profil.");
+        setErrorMessage(json.error || "Failed to update profile.");
       } else {
-        setSuccessMessage("Profil Anda berhasil diperbarui!");
+        setSuccessMessage("Your profile has been updated successfully!");
         await update({
           ...session,
           user: { ...session?.user, name: json.name },
         });
       }
     } catch {
-      setErrorMessage("Terjadi kesalahan koneksi.");
+      setErrorMessage("A connection error occurred. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -73,18 +73,18 @@ export default function ProfilePage() {
     session?.user?.role === "SUPER_ADMIN"
       ? "Super Admin"
       : session?.user?.role === "ADMIN"
-      ? "Staf Hotel"
-      : "Tamu Hotel";
+      ? "Hotel Staff"
+      : "Hotel Guest";
 
   return (
     <div className="space-y-5 sm:space-y-6">
       {/* Header */}
       <div>
         <h1 className="text-xl sm:text-2xl font-extrabold text-[#0F3D91] tracking-tight">
-          Profil & Pengaturan Akun
+          Profile & Account Settings
         </h1>
         <p className="text-xs text-slate-500 font-semibold mt-1">
-          Kelola informasi pribadi dan akses akun Anda.
+          Manage your personal information and account access.
         </p>
       </div>
 
@@ -106,7 +106,7 @@ export default function ProfilePage() {
               </span>
               {session?.user?.roomNumber && (
                 <span className="px-3 py-0.5 text-[10px] font-extrabold bg-slate-100 text-slate-700 rounded-full">
-                  Kamar {session.user.roomNumber}
+                  Room {session.user.roomNumber}
                 </span>
               )}
             </div>
@@ -118,7 +118,7 @@ export default function ProfilePage() {
       <Card className="rounded-3xl p-5 sm:p-6 border border-slate-100 shadow-xs bg-white space-y-5 sm:space-y-6">
         <div className="flex items-center gap-2 text-[#0F3D91] border-b border-slate-100 pb-3">
           <User className="h-5 w-5 text-[#1A73E8] shrink-0" />
-          <h3 className="text-sm sm:text-base font-extrabold">Ubah Profil & Kata Sandi</h3>
+          <h3 className="text-sm sm:text-base font-extrabold">Update Profile & Password</h3>
         </div>
 
         {successMessage && (
@@ -137,15 +137,15 @@ export default function ProfilePage() {
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 sm:space-y-5">
           <Input
-            label="Nama Lengkap"
-            placeholder="Masukkan nama lengkap Anda"
+            label="Full Name"
+            placeholder="Enter your full name"
             error={errors.name?.message}
             {...register("name")}
           />
 
           <div className="space-y-1.5">
             <label className="block text-xs font-bold text-slate-700">
-              Alamat Email (Tidak dapat diubah)
+              Email Address (Cannot be changed)
             </label>
             <input
               type="text"
@@ -159,7 +159,7 @@ export default function ProfilePage() {
             <div className="flex items-center gap-1.5">
               <KeyRound className="h-3.5 w-3.5 text-[#1A73E8]" />
               <label className="block text-xs font-bold text-slate-700">
-                Kata Sandi Baru (Kosongkan jika tidak ingin mengubah)
+                New Password (Leave blank to keep current password)
               </label>
             </div>
             <Input
@@ -176,7 +176,7 @@ export default function ProfilePage() {
               isLoading={isLoading}
               className="w-full sm:w-auto rounded-full px-6 py-2.5 font-extrabold text-xs"
             >
-              Simpan Perubahan
+              Save Changes
             </Button>
           </div>
         </form>

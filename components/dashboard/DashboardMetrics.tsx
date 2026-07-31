@@ -17,25 +17,25 @@ export const DashboardMetrics: React.FC<DashboardMetricsProps> = ({ metrics }) =
   return (
     <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5">
       <MetricCard
-        title="Tamu Menginap"
+        title="Staying Guests"
         value={metrics.totalActiveGuests}
-        subtitle="Tamu dengan request aktif"
+        subtitle="Guests with active requests"
         isFeatured={true}
       />
       <MetricCard
-        title="Perlu Ditangani"
+        title="Pending Orders"
         value={metrics.pendingOrdersCount}
-        subtitle="Pesanan belum selesai"
+        subtitle="Orders awaiting action"
       />
       <MetricCard
-        title="Lewat SLA (>15m)"
+        title="SLA Breach (>15m)"
         value={metrics.slaBreachCount}
-        subtitle="Terlambat di-ack"
+        subtitle="Late acknowledgement"
       />
       <MetricCard
-        title="Pemasukan Hari Ini"
+        title="Today's Revenue"
         value={formatIDR(metrics.todayRevenue)}
-        subtitle="Total pembayaran lunas"
+        subtitle="Total paid today"
       />
     </div>
   );

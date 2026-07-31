@@ -20,7 +20,7 @@ function MyOrdersContent() {
       {createdSuccess && (
         <div className="flex items-start sm:items-center gap-3 p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs sm:text-sm font-semibold">
           <CheckCircle2 className="h-5 w-5 text-emerald-600 shrink-0 mt-0.5 sm:mt-0" />
-          <span>Permintaan layanan Anda berhasil dikirim. Staf hotel akan segera memprosesnya!</span>
+          <span>Your service request was submitted successfully. Hotel staff will process it shortly!</span>
         </div>
       )}
 
@@ -28,16 +28,16 @@ function MyOrdersContent() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-xl sm:text-2xl font-extrabold text-[#0F3D91] tracking-tight">
-            Pesanan Layanan Saya
+            My Service Orders
           </h1>
           <p className="text-xs text-slate-500 font-semibold mt-1">
-            Pantau status dan riwayat permintaan layanan kamar Anda.
+            Track the status and history of your room service requests.
           </p>
         </div>
         <Link href="/my-orders/new" className="self-start sm:self-auto">
           <Button className="w-full sm:w-auto rounded-full font-extrabold text-xs px-5 py-2.5">
             <PlusCircle className="w-4 h-4 mr-2 shrink-0" />
-            Request Baru
+            New Request
           </Button>
         </Link>
       </div>
@@ -48,7 +48,7 @@ function MyOrdersContent() {
       ) : isError ? (
         <div className="p-6 text-center rounded-3xl bg-rose-50 border border-rose-200 text-xs text-rose-700 font-semibold space-y-2">
           <AlertCircle className="h-5 w-5 mx-auto text-rose-500" />
-          <p>Gagal memuat riwayat pesanan. Coba muat ulang halaman ini.</p>
+          <p>Failed to load order history. Please refresh the page.</p>
         </div>
       ) : (
         <OrderTable orders={orders} isStaff={false} />

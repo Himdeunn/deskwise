@@ -36,9 +36,7 @@ export const MetricCard: React.FC<MetricCardProps> = ({
         <div
           className={clsx(
             "h-8 w-8 sm:h-9 sm:w-9 rounded-full flex items-center justify-center shrink-0 transition-transform hover:scale-110 cursor-pointer",
-            isFeatured
-              ? "bg-white/20 text-white"
-              : "bg-[#f0f5ff] text-[#0F3D91]"
+            isFeatured ? "bg-white/20 text-white" : "bg-[#f0f5ff] text-[#0F3D91]"
           )}
         >
           <ArrowUpRight className="h-4 w-4 sm:h-5 sm:w-5" />
@@ -48,12 +46,7 @@ export const MetricCard: React.FC<MetricCardProps> = ({
       <div className="space-y-1">
         <p className="text-2xl sm:text-3xl font-extrabold tracking-tight leading-none">{value}</p>
         {subtitle && (
-          <p
-            className={clsx(
-              "text-[11px] sm:text-xs font-semibold mt-1",
-              isFeatured ? "text-slate-200" : "text-slate-500"
-            )}
-          >
+          <p className={clsx("text-[11px] sm:text-xs font-semibold mt-1", isFeatured ? "text-slate-200" : "text-slate-500")}>
             {subtitle}
           </p>
         )}

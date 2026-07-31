@@ -11,10 +11,10 @@ import Link from "next/link";
 import { Hotel } from "lucide-react";
 
 const registerSchema = z.object({
-  name: z.string().min(2, "Nama minimal 2 karakter"),
-  email: z.string().email("Email tidak valid"),
-  password: z.string().min(6, "Password minimal 6 karakter"),
-  roomNumber: z.string().min(1, "Nomor kamar wajib diisi"),
+  name: z.string().min(2, "Name must be at least 2 characters"),
+  email: z.string().email("Please enter a valid email address"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
+  roomNumber: z.string().min(1, "Room number is required"),
 });
 
 type RegisterFormData = z.infer<typeof registerSchema>;
@@ -46,12 +46,12 @@ export const RegisterForm: React.FC = () => {
       const json = await res.json();
 
       if (!res.ok) {
-        setErrorMessage(json.error || "Pendaftaran tidak berhasil.");
+        setErrorMessage(json.error || "Registration failed. Please try again.");
       } else {
         router.push("/login?registered=true");
       }
-    } catch (err) {
-      setErrorMessage("Terjadi masalah koneksi.");
+    } catch {
+      setErrorMessage("A connection error occurred. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -60,12 +60,12 @@ export const RegisterForm: React.FC = () => {
   return (
     <div className="w-full max-w-md bg-white p-8 rounded-3xl shadow-xl border border-slate-100 space-y-6">
       <div className="text-center space-y-2">
-        <div className="inline-flex items-center justify-center h-14 w-14 rounded-2xl bg-gradient-to-tr from-violet-600 to-indigo-500 text-white shadow-lg shadow-indigo-500/30 mb-2">
+        <div className="inline-flex items-center justify-center h-14 w-14 rounded-2xl bg-[#0F3D91] text-white shadow-lg shadow-blue-900/30 mb-2">
           <Hotel className="h-7 w-7" />
         </div>
-        <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">Daftar Akun Tamu</h1>
+        <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">Create Guest Account</h1>
         <p className="text-xs font-medium text-slate-500">
-          Buat akun untuk memesan layanan kamar secara mandiri
+          Register to request hotel room services independently
         </p>
       </div>
 
@@ -77,8 +77,8 @@ export const RegisterForm: React.FC = () => {
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <Input
-          label="Nama Lengkap"
-          placeholder="contoh: Ahmad Subagja"
+          label="Full Name"
+          placeholder="e.g., John Smith"
           error={errors.name?.message}
           {...register("name")}
         />
@@ -86,14 +86,14 @@ export const RegisterForm: React.FC = () => {
         <Input
           label="Email"
           type="email"
-          placeholder="contoh: ahmad@gmail.com"
+          placeholder="e.g., john@example.com"
           error={errors.email?.message}
           {...register("email")}
         />
 
         <Input
-          label="Nomor Kamar"
-          placeholder="contoh: 101"
+          label="Room Number"
+          placeholder="e.g., 101"
           error={errors.roomNumber?.message}
           {...register("roomNumber")}
         />
@@ -107,14 +107,14 @@ export const RegisterForm: React.FC = () => {
         />
 
         <Button type="submit" className="w-full rounded-full py-3 text-sm font-bold shadow-md" isLoading={isLoading}>
-          Buat Akun Tamu
+          Create Account
         </Button>
       </form>
 
       <div className="text-center text-xs font-medium text-slate-500 pt-2 border-t border-slate-100">
-        Sudah memiliki akun?{" "}
-        <Link href="/login" className="font-bold text-violet-600 hover:underline">
-          Masuk di sini
+        Already have an account?{" "}
+        <Link href="/login" className="font-bold text-[#1A73E8] hover:underline">
+          Sign in here
         </Link>
       </div>
     </div>

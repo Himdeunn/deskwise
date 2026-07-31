@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import Link from "next/link";
 import { useOrders } from "@/features/orders/hooks/useOrders";
 import { computeMetrics } from "@/features/orders/utils/computeMetrics";
@@ -33,7 +33,7 @@ export default function DashboardOverviewPage() {
         <div>
           <h1 className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">Dashboard</h1>
           <p className="text-xs text-slate-500 font-semibold mt-1">
-            Ringkasan data dan analitik operasional kamar tamu hotel
+            Operational overview and analytics for hotel guest services
           </p>
         </div>
         <button
@@ -41,7 +41,7 @@ export default function DashboardOverviewPage() {
           className="inline-flex items-center gap-2 text-xs font-bold px-4 py-2.5 bg-white border border-slate-200/80 rounded-full text-slate-700 hover:bg-slate-50 transition-all shadow-xs self-start sm:self-auto"
         >
           <RefreshCw className="h-3.5 w-3.5 text-[#1A73E8]" />
-          Perbarui Data
+          Refresh Data
         </button>
       </div>
 
@@ -56,7 +56,7 @@ export default function DashboardOverviewPage() {
         <DashboardMetrics metrics={metrics} />
       )}
 
-      {/* Bottom Section: Urgent orders + chart */}
+      {/* Bottom Section */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 sm:gap-6">
         {/* Urgent Orders Preview */}
         <div className="lg:col-span-2 bg-white rounded-3xl p-5 sm:p-6 border border-slate-100 shadow-xs space-y-4">
@@ -66,15 +66,15 @@ export default function DashboardOverviewPage() {
                 <ShieldAlert className="h-5 w-5" />
               </div>
               <div className="min-w-0">
-                <h3 className="text-sm sm:text-base font-extrabold text-[#0F3D91] truncate">Request Perlu Penanganan</h3>
-                <p className="text-[11px] text-slate-500 font-medium">Pesanan baru & SLA breach</p>
+                <h3 className="text-sm sm:text-base font-extrabold text-[#0F3D91] truncate">Orders Needing Attention</h3>
+                <p className="text-[11px] text-slate-500 font-medium">New & SLA breach orders</p>
               </div>
             </div>
             <Link
               href="/dashboard/orders"
               className="inline-flex items-center gap-1 text-xs font-extrabold text-[#1A73E8] hover:underline shrink-0"
             >
-              <span className="hidden xs:inline">Lihat Semua</span>
+              <span className="hidden xs:inline">View All</span>
               <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
@@ -83,7 +83,7 @@ export default function DashboardOverviewPage() {
             <Skeleton className="h-40 w-full rounded-2xl" />
           ) : urgentOrders.length === 0 ? (
             <div className="py-8 text-center text-xs text-slate-500 font-medium bg-slate-50 rounded-2xl border border-dashed border-slate-200">
-              Tidak ada pesanan baru yang perlu ditangani saat ini.
+              No pending orders require attention right now.
             </div>
           ) : (
             <div className="space-y-2">
@@ -94,7 +94,7 @@ export default function DashboardOverviewPage() {
                 >
                   <div className="flex items-center gap-2.5 min-w-0">
                     <span className="px-2.5 py-1 text-[10px] font-extrabold bg-[#f0f5ff] text-[#0F3D91] rounded-full shrink-0">
-                      K-{ord.roomNumber}
+                      Rm-{ord.roomNumber}
                     </span>
                     <div className="min-w-0">
                       <p className="text-xs font-bold text-slate-900 truncate">

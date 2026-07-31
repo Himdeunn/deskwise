@@ -34,26 +34,25 @@ export const Sidebar: React.FC<SidebarProps> = ({
   const isStaff = role === "SUPER_ADMIN" || role === "ADMIN";
   const isSuperAdmin = role === "SUPER_ADMIN";
 
-  // Close mobile sidebar on route change
   useEffect(() => {
     if (onMobileClose) onMobileClose();
   }, [pathname]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const staffNav = [
     { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
-    { name: "Daftar Request", href: "/dashboard/orders", icon: ListOrdered },
+    { name: "Service Requests", href: "/dashboard/orders", icon: ListOrdered },
   ];
 
   if (isSuperAdmin) {
-    staffNav.push({ name: "Tim Admin", href: "/dashboard/admin-management", icon: Users });
+    staffNav.push({ name: "Admin Team", href: "/dashboard/admin-management", icon: Users });
   }
 
-  staffNav.push({ name: "Profil & Pengaturan", href: "/profile", icon: Settings });
+  staffNav.push({ name: "Profile & Settings", href: "/profile", icon: Settings });
 
   const customerNav = [
-    { name: "Pesanan Saya", href: "/my-orders", icon: ShoppingBag },
-    { name: "Request Baru", href: "/my-orders/new", icon: PlusCircle },
-    { name: "Profil & Pengaturan", href: "/profile", icon: Settings },
+    { name: "My Orders", href: "/my-orders", icon: ShoppingBag },
+    { name: "New Request", href: "/my-orders/new", icon: PlusCircle },
+    { name: "Profile & Settings", href: "/profile", icon: Settings },
   ];
 
   const items = isStaff ? staffNav : customerNav;
@@ -72,7 +71,6 @@ export const Sidebar: React.FC<SidebarProps> = ({
               <p className="text-[11px] text-slate-400 font-medium">Hotel Service</p>
             </div>
           </div>
-          {/* Close button on mobile */}
           {onMobileClose && (
             <button
               onClick={onMobileClose}
@@ -86,7 +84,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         {/* Navigation Items */}
         <div className="space-y-1.5 pt-4">
           <div className="px-3 pb-2 text-[11px] font-bold uppercase tracking-wider text-slate-400">
-            Menu Utama
+            Navigation
           </div>
           {items.map((item) => {
             const Icon = item.icon;
@@ -114,13 +112,13 @@ export const Sidebar: React.FC<SidebarProps> = ({
       <div className="p-4 rounded-2xl bg-[#f0f5ff] border border-[#BBD4FF]/50 space-y-1.5">
         <div className="flex items-center gap-2 text-[#1A73E8]">
           <Sparkles className="h-4 w-4 shrink-0" />
-          <span className="text-xs font-bold uppercase tracking-wide">Pengguna</span>
+          <span className="text-xs font-bold uppercase tracking-wide">Account</span>
         </div>
         <p className="text-xs font-extrabold text-[#0F3D91]">
-          {role === "SUPER_ADMIN" ? "Super Admin" : role === "ADMIN" ? "Staf Hotel" : "Tamu Kamar"}
+          {role === "SUPER_ADMIN" ? "Super Admin" : role === "ADMIN" ? "Hotel Staff" : "Room Guest"}
         </p>
         <p className="text-[11px] text-slate-500 font-medium truncate">
-          {session?.user?.name || "Pengguna DeskWise"}
+          {session?.user?.name || "DeskWise User"}
         </p>
       </div>
     </div>
@@ -128,20 +126,18 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
   return (
     <>
-      {/* Desktop Sidebar – hidden on mobile */}
-      <aside className="hidden lg:flex w-64 shrink-0 bg-white border-r border-slate-100 sticky top-0 h-screen overflow-y-auto p-5 z-20 flex-col">
+      {/* Desktop Sidebar */}
+      <aside className="hidden lg:flex w-64 shrink-0 bg-white border-r border-slate-100 h-full overflow-y-auto p-5 z-20 flex-col">
         <SidebarContent />
       </aside>
 
       {/* Mobile Sidebar Overlay */}
       {mobileOpen && (
         <div className="fixed inset-0 z-40 lg:hidden">
-          {/* Backdrop */}
           <div
             className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm"
             onClick={onMobileClose}
           />
-          {/* Drawer Panel */}
           <aside className="absolute left-0 top-0 h-full w-72 max-w-[85vw] bg-white p-5 shadow-2xl overflow-y-auto z-50 flex flex-col">
             <SidebarContent />
           </aside>
@@ -151,12 +147,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
   );
 };
 
-// Standalone mobile hamburger trigger component
 export const MobileMenuButton: React.FC<{ onClick: () => void }> = ({ onClick }) => (
   <button
     onClick={onClick}
     className="lg:hidden h-10 w-10 rounded-xl bg-white border border-slate-200/80 shadow-xs text-slate-600 flex items-center justify-center hover:bg-slate-50 transition-colors"
-    aria-label="Buka menu"
+    aria-label="Open menu"
   >
     <Menu className="h-5 w-5" />
   </button>

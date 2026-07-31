@@ -8,7 +8,7 @@ import { SlaBadge } from "./SlaBadge";
 import { Button } from "@/components/ui/Button";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { OrderDetailDrawer } from "./OrderDetailDrawer";
-import { Eye, UserCheck, RefreshCw, CheckCircle2, ChevronRight } from "lucide-react";
+import { Eye, UserCheck, RefreshCw, CheckCircle2 } from "lucide-react";
 
 interface OrderTableProps {
   orders: HotelOrder[];
@@ -35,8 +35,8 @@ export const OrderTable: React.FC<OrderTableProps> = ({
   if (orders.length === 0) {
     return (
       <EmptyState
-        title="Belum Ada Pesanan"
-        description="Tidak ada pesanan yang cocok dengan filter yang dipilih."
+        title="No Orders Found"
+        description="No orders match your current search or filter criteria."
       />
     );
   }
@@ -50,18 +50,18 @@ export const OrderTable: React.FC<OrderTableProps> = ({
 
   return (
     <div className="space-y-4">
-      {/* ── Desktop / Tablet Table (≥768px) ── */}
+      {/* Desktop Table (md+) */}
       <div className="hidden md:block overflow-x-auto rounded-3xl border border-slate-100 bg-white shadow-xs">
         <table className="w-full min-w-[680px] text-left text-xs text-slate-600">
           <thead className="bg-slate-50/80 text-[11px] uppercase font-bold text-slate-400 border-b border-slate-100 tracking-wider">
             <tr>
-              <th className="px-4 lg:px-6 py-4">Kamar</th>
-              <th className="px-4 lg:px-6 py-4">Tamu</th>
-              <th className="px-4 lg:px-6 py-4">Layanan</th>
-              <th className="px-4 lg:px-6 py-4">Biaya</th>
+              <th className="px-4 lg:px-6 py-4">Room</th>
+              <th className="px-4 lg:px-6 py-4">Guest</th>
+              <th className="px-4 lg:px-6 py-4">Service</th>
+              <th className="px-4 lg:px-6 py-4">Amount</th>
               <th className="px-4 lg:px-6 py-4">Status</th>
-              <th className="px-4 lg:px-6 py-4">Bayar</th>
-              <th className="px-4 lg:px-6 py-4 text-right">Aksi</th>
+              <th className="px-4 lg:px-6 py-4">Payment</th>
+              <th className="px-4 lg:px-6 py-4 text-right">Actions</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100 font-medium">
@@ -69,7 +69,7 @@ export const OrderTable: React.FC<OrderTableProps> = ({
               <tr key={ord.id} className="hover:bg-slate-50/60 transition-colors">
                 <td className="px-4 lg:px-6 py-4">
                   <span className="inline-block px-2.5 py-1 bg-[#f0f5ff] text-[#0F3D91] border border-[#BBD4FF]/60 rounded-full font-extrabold text-xs whitespace-nowrap">
-                    K-{ord.roomNumber}
+                    Rm-{ord.roomNumber}
                   </span>
                 </td>
                 <td className="px-4 lg:px-6 py-4">
@@ -101,7 +101,7 @@ export const OrderTable: React.FC<OrderTableProps> = ({
                         onClick={() => handleUpdate(ord.id, "Acknowledged")}
                       >
                         <UserCheck className="w-3 h-3 mr-1 shrink-0" />
-                        Terima
+                        Accept
                       </Button>
                     )}
                     {isStaff && ord.status === "Acknowledged" && (
@@ -112,7 +112,7 @@ export const OrderTable: React.FC<OrderTableProps> = ({
                         onClick={() => handleUpdate(ord.id, "InProgress")}
                       >
                         <RefreshCw className="w-3 h-3 mr-1 shrink-0" />
-                        Proses
+                        Process
                       </Button>
                     )}
                     {isStaff && ord.status === "InProgress" && (
@@ -123,7 +123,7 @@ export const OrderTable: React.FC<OrderTableProps> = ({
                         onClick={() => handleUpdate(ord.id, "Completed")}
                       >
                         <CheckCircle2 className="w-3 h-3 mr-1 shrink-0" />
-                        Selesai
+                        Complete
                       </Button>
                     )}
                     <Button
@@ -142,17 +142,13 @@ export const OrderTable: React.FC<OrderTableProps> = ({
         </table>
       </div>
 
-      {/* ── Mobile Card List (<768px) ── */}
+      {/* Mobile Card List (<md) */}
       <div className="md:hidden space-y-3">
         {orders.map((ord) => (
-          <div
-            key={ord.id}
-            className="p-4 bg-white rounded-3xl border border-slate-100 shadow-xs space-y-3"
-          >
-            {/* Top row: Room badge + Statuses + Detail trigger */}
+          <div key={ord.id} className="p-4 bg-white rounded-3xl border border-slate-100 shadow-xs space-y-3">
             <div className="flex items-start justify-between gap-2">
               <span className="px-2.5 py-1 text-xs font-extrabold bg-[#f0f5ff] text-[#0F3D91] rounded-full shrink-0">
-                Kamar {ord.roomNumber}
+                Room {ord.roomNumber}
               </span>
               <div className="flex items-center gap-1.5 flex-wrap justify-end">
                 <OrderStatusBadge status={ord.status} />
@@ -160,18 +156,16 @@ export const OrderTable: React.FC<OrderTableProps> = ({
               </div>
             </div>
 
-            {/* Middle: Service info + price */}
             <div className="flex items-center justify-between gap-3">
               <div className="min-w-0">
                 <p className="font-extrabold text-slate-900 text-sm truncate">
                   {ord.service} <span className="font-bold text-slate-500">({ord.quantity}×)</span>
                 </p>
-                <p className="text-xs text-slate-500 font-semibold mt-0.5 truncate">{ord.guest.name}</p>
+                <p className="text-xs text-slate-500 font-semibold mt-0.5 truncate">Guest: {ord.guest.name}</p>
               </div>
               <p className="font-extrabold text-[#0F3D91] text-sm shrink-0">{formatIDR(ord.amount)}</p>
             </div>
 
-            {/* Bottom row: Payment badge + Action buttons */}
             <div className="flex items-center justify-between pt-2 border-t border-slate-100 gap-2 flex-wrap">
               <PaymentStatusBadge status={ord.paymentStatus} />
               <div className="flex items-center gap-2">
@@ -182,7 +176,7 @@ export const OrderTable: React.FC<OrderTableProps> = ({
                     className="text-xs py-1 px-2.5 rounded-full border-amber-300 text-amber-700 hover:bg-amber-50 font-bold"
                     onClick={() => handleUpdate(ord.id, "Acknowledged")}
                   >
-                    <UserCheck className="w-3 h-3 mr-1" /> Terima
+                    <UserCheck className="w-3 h-3 mr-1" /> Accept
                   </Button>
                 )}
                 {isStaff && ord.status === "Acknowledged" && (
@@ -192,7 +186,7 @@ export const OrderTable: React.FC<OrderTableProps> = ({
                     className="text-xs py-1 px-2.5 rounded-full border-violet-300 text-violet-700 hover:bg-violet-50 font-bold"
                     onClick={() => handleUpdate(ord.id, "InProgress")}
                   >
-                    <RefreshCw className="w-3 h-3 mr-1" /> Proses
+                    <RefreshCw className="w-3 h-3 mr-1" /> Process
                   </Button>
                 )}
                 {isStaff && ord.status === "InProgress" && (
@@ -202,7 +196,7 @@ export const OrderTable: React.FC<OrderTableProps> = ({
                     className="text-xs py-1 px-2.5 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold"
                     onClick={() => handleUpdate(ord.id, "Completed")}
                   >
-                    <CheckCircle2 className="w-3 h-3 mr-1" /> Selesai
+                    <CheckCircle2 className="w-3 h-3 mr-1" /> Complete
                   </Button>
                 )}
                 <Button
@@ -212,7 +206,7 @@ export const OrderTable: React.FC<OrderTableProps> = ({
                   onClick={() => setSelectedOrder(ord)}
                 >
                   <Eye className="w-3.5 h-3.5 mr-1" />
-                  Detail
+                  Details
                 </Button>
               </div>
             </div>
@@ -220,7 +214,6 @@ export const OrderTable: React.FC<OrderTableProps> = ({
         ))}
       </div>
 
-      {/* Detail Drawer Modal */}
       <OrderDetailDrawer
         order={selectedOrder}
         isOpen={!!selectedOrder}

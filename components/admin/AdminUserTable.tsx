@@ -30,8 +30,8 @@ export const AdminUserTable: React.FC<AdminUserTableProps> = ({
   if (admins.length === 0) {
     return (
       <EmptyState
-        title="Tidak Ada Akun Staf"
-        description="Belum ada akun Admin/Staf tambahan yang terdaftar."
+        title="No Staff Accounts"
+        description="No additional Admin or Staff accounts have been registered yet."
       />
     );
   }
@@ -43,11 +43,11 @@ export const AdminUserTable: React.FC<AdminUserTableProps> = ({
         <table className="w-full min-w-[560px] text-left text-xs text-slate-600">
           <thead className="bg-slate-50/80 text-[11px] uppercase font-bold text-slate-400 border-b border-slate-100 tracking-wider">
             <tr>
-              <th className="px-5 lg:px-6 py-4">Nama Staf</th>
+              <th className="px-5 lg:px-6 py-4">Staff Name</th>
               <th className="px-5 lg:px-6 py-4">Email</th>
-              <th className="px-5 lg:px-6 py-4">Peran</th>
-              <th className="px-5 lg:px-6 py-4">Terdaftar</th>
-              <th className="px-5 lg:px-6 py-4 text-right">Aksi</th>
+              <th className="px-5 lg:px-6 py-4">Role</th>
+              <th className="px-5 lg:px-6 py-4">Registered</th>
+              <th className="px-5 lg:px-6 py-4 text-right">Actions</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100 font-medium">
@@ -69,7 +69,7 @@ export const AdminUserTable: React.FC<AdminUserTableProps> = ({
                   </Badge>
                 </td>
                 <td className="px-5 lg:px-6 py-3.5 text-xs text-slate-500 whitespace-nowrap">
-                  {new Date(admin.createdAt).toLocaleDateString("id-ID")}
+                  {new Date(admin.createdAt).toLocaleDateString("en-US")}
                 </td>
                 <td className="px-5 lg:px-6 py-3.5 text-right">
                   {admin.id !== currentUserId && admin.role !== "SUPER_ADMIN" && (
@@ -81,7 +81,7 @@ export const AdminUserTable: React.FC<AdminUserTableProps> = ({
                       className="py-1 px-3 text-xs rounded-full"
                     >
                       <Trash2 className="w-3 h-3 mr-1 shrink-0" />
-                      Hapus
+                      Delete
                     </Button>
                   )}
                 </td>
@@ -94,10 +94,7 @@ export const AdminUserTable: React.FC<AdminUserTableProps> = ({
       {/* Mobile Card List (<md) */}
       <div className="md:hidden space-y-3">
         {admins.map((admin) => (
-          <div
-            key={admin.id}
-            className="p-4 bg-white rounded-3xl border border-slate-100 shadow-xs space-y-3"
-          >
+          <div key={admin.id} className="p-4 bg-white rounded-3xl border border-slate-100 shadow-xs space-y-3">
             <div className="flex items-center justify-between gap-3">
               <div className="flex items-center gap-3 min-w-0">
                 <div className="h-9 w-9 rounded-full bg-[#f0f5ff] text-[#0F3D91] flex items-center justify-center font-extrabold text-xs shrink-0">
@@ -115,7 +112,7 @@ export const AdminUserTable: React.FC<AdminUserTableProps> = ({
             </div>
             <div className="flex items-center justify-between pt-2.5 border-t border-slate-100">
               <span className="text-[11px] text-slate-400 font-medium">
-                Terdaftar {new Date(admin.createdAt).toLocaleDateString("id-ID")}
+                Registered {new Date(admin.createdAt).toLocaleDateString("en-US")}
               </span>
               {admin.id !== currentUserId && admin.role !== "SUPER_ADMIN" && (
                 <Button
@@ -126,7 +123,7 @@ export const AdminUserTable: React.FC<AdminUserTableProps> = ({
                   className="py-1 px-3 text-xs rounded-full"
                 >
                   <Trash2 className="w-3 h-3 mr-1" />
-                  Hapus
+                  Delete
                 </Button>
               )}
             </div>

@@ -9,9 +9,9 @@ import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 
 const createAdminSchema = z.object({
-  name: z.string().min(2, "Nama minimal 2 karakter"),
-  email: z.string().email("Email tidak valid"),
-  password: z.string().min(6, "Password minimal 6 karakter"),
+  name: z.string().min(2, "Name must be at least 2 characters"),
+  email: z.string().email("Please enter a valid email address"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
 });
 
 type AdminFormValues = z.infer<typeof createAdminSchema>;
@@ -53,21 +53,21 @@ export const AdminUserFormModal: React.FC<AdminUserFormModalProps> = ({
       const json = await res.json();
 
       if (!res.ok) {
-        setErrorMessage(json.error || "Gagal membuat akun Admin.");
+        setErrorMessage(json.error || "Failed to create admin account.");
       } else {
         reset();
         onSuccess();
         onClose();
       }
-    } catch (err) {
-      setErrorMessage("Terjadi kesalahan koneksi.");
+    } catch {
+      setErrorMessage("A connection error occurred. Please try again.");
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title="Tambah Staf Admin Baru">
+    <Modal isOpen={isOpen} onClose={onClose} title="Add New Staff Admin">
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 text-sm">
         {errorMessage && (
           <div className="p-3 rounded-lg bg-rose-50 text-rose-700 text-xs font-medium border border-rose-200">
@@ -76,22 +76,22 @@ export const AdminUserFormModal: React.FC<AdminUserFormModalProps> = ({
         )}
 
         <Input
-          label="Nama Lengkap Staf"
-          placeholder="contoh: Rina Wulandari"
+          label="Full Name"
+          placeholder="e.g., Sarah Johnson"
           error={errors.name?.message}
           {...register("name")}
         />
 
         <Input
-          label="Email Staf"
+          label="Email"
           type="email"
-          placeholder="contoh: admin.rina@deskwise.com"
+          placeholder="e.g., sarah@deskwise.com"
           error={errors.email?.message}
           {...register("email")}
         />
 
         <Input
-          label="Password Akses"
+          label="Password"
           type="password"
           placeholder="••••••••"
           error={errors.password?.message}
@@ -100,10 +100,10 @@ export const AdminUserFormModal: React.FC<AdminUserFormModalProps> = ({
 
         <div className="flex gap-2 pt-2 justify-end">
           <Button type="button" variant="outline" onClick={onClose}>
-            Batal
+            Cancel
           </Button>
           <Button type="submit" isLoading={isLoading}>
-            Simpan Akun Admin
+            Save Admin Account
           </Button>
         </div>
       </form>

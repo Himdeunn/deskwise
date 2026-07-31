@@ -24,7 +24,7 @@ export default function AdminManagementPage() {
         setAdmins(data);
       }
     } catch (e) {
-      console.error("Gagal mengambil data admin:", e);
+      console.error("Failed to load admin list:", e);
     } finally {
       setIsLoading(false);
     }
@@ -35,7 +35,7 @@ export default function AdminManagementPage() {
   }, []);
 
   const handleDeleteAdmin = async (id: string) => {
-    if (!confirm("Apakah Anda yakin ingin menghapus akun admin ini?")) return;
+    if (!confirm("Are you sure you want to delete this admin account? This action cannot be undone.")) return;
 
     setIsDeleting(true);
     try {
@@ -44,10 +44,10 @@ export default function AdminManagementPage() {
         fetchAdmins();
       } else {
         const err = await res.json();
-        alert(err.error || "Gagal menghapus admin.");
+        alert(err.error || "Failed to delete admin account.");
       }
-    } catch (e) {
-      alert("Terjadi kesalahan koneksi.");
+    } catch {
+      alert("A connection error occurred. Please try again.");
     } finally {
       setIsDeleting(false);
     }
@@ -57,9 +57,9 @@ export default function AdminManagementPage() {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <div className="flex items-center gap-2">
-            <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">
-              Manajemen Tim Admin
+          <div className="flex items-center gap-2 flex-wrap">
+            <h1 className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">
+              Admin Team Management
             </h1>
             <span className="px-2.5 py-0.5 text-[10px] font-bold bg-violet-100 text-violet-700 rounded-full flex items-center gap-1">
               <ShieldCheck className="w-3 h-3" />
@@ -67,18 +67,18 @@ export default function AdminManagementPage() {
             </span>
           </div>
           <p className="text-xs text-slate-500 font-medium mt-1">
-            Kelola pembuatan dan hak akses akun staf pengelola aplikasi DeskWise.
+            Manage creation and access rights for DeskWise staff accounts.
           </p>
         </div>
 
         <Button onClick={() => setIsModalOpen(true)} className="self-start sm:self-auto rounded-full">
           <UserPlus className="w-4 h-4 mr-2" />
-          Tambah Staf Admin
+          Add Staff Admin
         </Button>
       </div>
 
       {isLoading ? (
-        <Skeleton className="h-64 w-full rounded-2xl" />
+        <Skeleton className="h-64 w-full rounded-3xl" />
       ) : (
         <AdminUserTable
           admins={admins}
