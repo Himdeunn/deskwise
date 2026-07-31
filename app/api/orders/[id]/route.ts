@@ -11,7 +11,7 @@ const updateOrderSchema = z.object({
 
 export async function PATCH(
   req: Request,
-  { params }: { params: { id: string } }
+  context: { params: { id: string } | Promise<{ id: string }> }
 ) {
   try {
     const session = await auth();
@@ -21,18 +21,19 @@ export async function PATCH(
 
     if (session.user.role === "CUSTOMER") {
       return NextResponse.json(
-        { error: "Tamu tidak diperbolehkan mengubah status pesanan." },
+        { error: "Guests are not allowed to update order statuses." },
         { status: 403 }
       );
     }
 
+    const params = await context.params;
     const { id } = params;
     const body = await req.json();
 
     const validation = updateOrderSchema.safeParse(body);
     if (!validation.success) {
       return NextResponse.json(
-        { error: "Data status tidak valid", details: validation.error.format() },
+        { error: "Invalid status data", details: validation.error.format() },
         { status: 400 }
       );
     }
@@ -42,7 +43,7 @@ export async function PATCH(
     });
 
     if (!existingOrder) {
-      return NextResponse.json({ error: "Pesanan tidak ditemukan" }, { status: 404 });
+      return NextResponse.json({ error: "Order not found" }, { status: 404 });
     }
 
     const updateData: any = {};

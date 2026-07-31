@@ -4,7 +4,7 @@ import { prisma } from "@/lib/prisma";
 
 export async function DELETE(
   req: Request,
-  { params }: { params: { id: string } }
+  context: { params: { id: string } | Promise<{ id: string }> }
 ) {
   try {
     const session = await auth();
@@ -12,11 +12,12 @@ export async function DELETE(
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
+    const params = await context.params;
     const { id } = params;
 
     if (id === session.user.id) {
       return NextResponse.json(
-        { error: "Anda tidak dapat menghapus akun Anda sendiri." },
+        { error: "You cannot delete your own account." },
         { status: 400 }
       );
     }
@@ -25,7 +26,7 @@ export async function DELETE(
       where: { id },
     });
 
-    return NextResponse.json({ message: "Akun admin berhasil dihapus." });
+    return NextResponse.json({ message: "Admin account deleted successfully." });
   } catch (error) {
     console.error("DELETE /api/admin-users/[id] error:", error);
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
