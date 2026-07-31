@@ -22,8 +22,20 @@ export const LandingNavbar: React.FC = () => {
       : "Staff Dashboard"
     : "Sign In";
 
+  const handleScrollToSection = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    sectionId: string
+  ) => {
+    e.preventDefault();
+    setMobileMenuOpen(false);
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
+
   return (
-    <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-100 shadow-2xs">
+    <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-100 shadow-2xs transition-all">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
         {/* Logo Brand */}
         <Link href="/" className="flex items-center gap-3">
@@ -42,19 +54,39 @@ export const LandingNavbar: React.FC = () => {
 
         {/* Desktop Nav Links */}
         <nav className="hidden md:flex items-center gap-8 text-xs font-bold text-slate-600">
-          <a href="#hero" className="hover:text-[#1A73E8] transition-colors">
+          <a
+            href="#hero"
+            onClick={(e) => handleScrollToSection(e, "hero")}
+            className="hover:text-[#1A73E8] transition-colors"
+          >
             Home
           </a>
-          <a href="#about" className="hover:text-[#1A73E8] transition-colors">
+          <a
+            href="#about"
+            onClick={(e) => handleScrollToSection(e, "about")}
+            className="hover:text-[#1A73E8] transition-colors"
+          >
             About
           </a>
-          <a href="#services" className="hover:text-[#1A73E8] transition-colors">
+          <a
+            href="#services"
+            onClick={(e) => handleScrollToSection(e, "services")}
+            className="hover:text-[#1A73E8] transition-colors"
+          >
             Services
           </a>
-          <a href="#faq" className="hover:text-[#1A73E8] transition-colors">
+          <a
+            href="#faq"
+            onClick={(e) => handleScrollToSection(e, "faq")}
+            className="hover:text-[#1A73E8] transition-colors"
+          >
             FAQ
           </a>
-          <a href="#contact" className="hover:text-[#1A73E8] transition-colors">
+          <a
+            href="#contact"
+            onClick={(e) => handleScrollToSection(e, "contact")}
+            className="hover:text-[#1A73E8] transition-colors"
+          >
             Contact
           </a>
         </nav>
@@ -81,7 +113,7 @@ export const LandingNavbar: React.FC = () => {
         {/* Mobile Hamburger Button */}
         <button
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="md:hidden h-10 w-10 rounded-xl bg-white border border-slate-200 text-slate-600 flex items-center justify-center"
+          className="md:hidden h-10 w-10 rounded-xl bg-white border border-slate-200 text-slate-600 flex items-center justify-center hover:bg-slate-50 transition-colors"
           aria-label="Toggle menu"
         >
           {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -90,40 +122,40 @@ export const LandingNavbar: React.FC = () => {
 
       {/* Mobile Dropdown Navigation */}
       {mobileMenuOpen && (
-        <div className="md:hidden bg-white border-b border-slate-100 px-4 py-4 space-y-3 animate-in fade-in slide-in-from-top-2">
+        <div className="md:hidden bg-white border-b border-slate-100 px-4 py-4 space-y-3 animate-in fade-in slide-in-from-top-2 duration-200">
           <nav className="flex flex-col space-y-2 text-sm font-bold text-slate-700">
             <a
               href="#hero"
-              onClick={() => setMobileMenuOpen(false)}
-              className="px-3 py-2 rounded-xl hover:bg-slate-50"
+              onClick={(e) => handleScrollToSection(e, "hero")}
+              className="px-3 py-2 rounded-xl hover:bg-slate-50 transition-colors"
             >
               Home
             </a>
             <a
               href="#about"
-              onClick={() => setMobileMenuOpen(false)}
-              className="px-3 py-2 rounded-xl hover:bg-slate-50"
+              onClick={(e) => handleScrollToSection(e, "about")}
+              className="px-3 py-2 rounded-xl hover:bg-slate-50 transition-colors"
             >
               About
             </a>
             <a
               href="#services"
-              onClick={() => setMobileMenuOpen(false)}
-              className="px-3 py-2 rounded-xl hover:bg-slate-50"
+              onClick={(e) => handleScrollToSection(e, "services")}
+              className="px-3 py-2 rounded-xl hover:bg-slate-50 transition-colors"
             >
               Services
             </a>
             <a
               href="#faq"
-              onClick={() => setMobileMenuOpen(false)}
-              className="px-3 py-2 rounded-xl hover:bg-slate-50"
+              onClick={(e) => handleScrollToSection(e, "faq")}
+              className="px-3 py-2 rounded-xl hover:bg-slate-50 transition-colors"
             >
               FAQ
             </a>
             <a
               href="#contact"
-              onClick={() => setMobileMenuOpen(false)}
-              className="px-3 py-2 rounded-xl hover:bg-slate-50"
+              onClick={(e) => handleScrollToSection(e, "contact")}
+              className="px-3 py-2 rounded-xl hover:bg-slate-50 transition-colors"
             >
               Contact
             </a>
@@ -132,7 +164,7 @@ export const LandingNavbar: React.FC = () => {
             <Link
               href={navHref}
               onClick={() => setMobileMenuOpen(false)}
-              className="w-full text-center bg-[#0F3D91] text-white text-xs font-extrabold py-3 rounded-full shadow-md"
+              className="w-full text-center bg-[#0F3D91] text-white text-xs font-extrabold py-3 rounded-full shadow-md hover:bg-[#1A73E8] transition-all"
             >
               {navLabel}
             </Link>

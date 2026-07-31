@@ -137,10 +137,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
       {mobileOpen && (
         <div className="fixed inset-0 z-40 lg:hidden">
           <div
-            className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm"
+            className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm transition-opacity duration-300 animate-in fade-in"
             onClick={onMobileClose}
           />
-          <aside className="absolute left-0 top-0 h-full w-72 max-w-[85vw] bg-white p-5 shadow-2xl overflow-y-auto z-50 flex flex-col">
+          <aside className="absolute left-0 top-0 h-full w-72 max-w-[85vw] bg-white p-5 shadow-2xl overflow-y-auto z-50 flex flex-col animate-in slide-in-from-left-4 duration-300">
             <SidebarContent />
           </aside>
         </div>
@@ -152,7 +152,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
 export const MobileMenuButton: React.FC<{ onClick: () => void }> = ({ onClick }) => (
   <button
     onClick={onClick}
-    className="lg:hidden h-10 w-10 rounded-xl bg-white border border-slate-200/80 shadow-xs text-slate-600 flex items-center justify-center hover:bg-slate-50 transition-colors"
+    className="lg:hidden h-10 w-10 rounded-xl bg-white border border-slate-200/80 shadow-xs text-slate-600 flex items-center justify-center hover:bg-slate-50 transition-all active:scale-95"
     aria-label="Open menu"
   >
     <Menu className="h-5 w-5" />
