@@ -13,18 +13,11 @@ const config: Config = {
         sans: ["var(--font-plus-jakarta)", "sans-serif"],
       },
       colors: {
-        darkside: {
-          900: "#14141f",
-          800: "#181825",
-          700: "#222234",
-          600: "#2b2b3f",
-        },
-        accent: {
-          50: "#f5f3ff",
-          100: "#ede9fe",
-          500: "#8b5cf6",
-          600: "#7c3aed",
-          700: "#6d28d9",
+        brand: {
+          blue: "#1A73E8",
+          navy: "#0F3D91",
+          soft: "#BBD4FF",
+          bg: "#f8fafc",
         },
       },
       borderRadius: {
