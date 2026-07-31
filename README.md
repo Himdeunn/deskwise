@@ -6,7 +6,13 @@ DeskWise is a modern, full-stack **Hotel Service Management Dashboard** built wi
 
 ---
 
+## 🌐 Live Application Demo
+- **Live Demo**: [https://deskwise.himdeunn.my.id](https://deskwise.himdeunn.my.id)
+
+---
+
 ## 📖 Table of Contents
+- [Live Application Demo](#-live-application-demo)
 - [Project Overview & Philosophy](#-project-overview--philosophy)
 - [Key Features & Role Access Matrix](#-key-features--role-access-matrix)
 - [Tech Stack & Tooling](#-tech-stack--tooling)

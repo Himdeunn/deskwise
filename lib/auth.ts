@@ -19,27 +19,32 @@ export const authConfig: NextAuthConfig = {
         const email = String(credentials.email).toLowerCase().trim();
         const password = String(credentials.password);
 
-        const user = await prisma.user.findUnique({
-          where: { email },
-        });
+        try {
+          const user = await prisma.user.findUnique({
+            where: { email },
+          });
 
-        if (!user) {
+          if (!user) {
+            return null;
+          }
+
+          const isPasswordValid = bcrypt.compareSync(password, user.passwordHash);
+
+          if (!isPasswordValid) {
+            return null;
+          }
+
+          return {
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            role: user.role,
+            roomNumber: user.roomNumber,
+          };
+        } catch (error) {
+          console.error("Authorize error:", error);
           return null;
         }
-
-        const isPasswordValid = bcrypt.compareSync(password, user.passwordHash);
-
-        if (!isPasswordValid) {
-          return null;
-        }
-
-        return {
-          id: user.id,
-          name: user.name,
-          email: user.email,
-          role: user.role,
-          roomNumber: user.roomNumber,
-        };
       },
     }),
   ],
@@ -67,7 +72,7 @@ export const authConfig: NextAuthConfig = {
   session: {
     strategy: "jwt",
   },
-  secret: process.env.NEXTAUTH_SECRET,
+  secret: process.env.NEXTAUTH_SECRET || process.env.AUTH_SECRET || "deskwise-production-auth-secret-key-2026",
 };
 
 export const { handlers, auth, signIn, signOut } = NextAuth(authConfig);
