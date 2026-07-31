@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
@@ -14,6 +14,7 @@ import {
   Settings,
   ListOrdered,
   Sparkles,
+  TrendingUp,
   X,
   Menu,
 } from "lucide-react";
@@ -41,6 +42,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   const staffNav = [
     { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
     { name: "Service Requests", href: "/dashboard/orders", icon: ListOrdered },
+    { name: "Revenue Reports", href: "/dashboard/revenue", icon: TrendingUp },
   ];
 
   if (isSuperAdmin) {

@@ -38,8 +38,8 @@ export const DashboardMetrics: React.FC<DashboardMetricsProps> = ({ metrics }) =
       <MetricCard
         title="Today's Revenue"
         value={formatIDR(metrics.todayRevenue)}
-        subtitle="Total paid today"
-        href="/dashboard/orders?status=Completed"
+        subtitle="View financial reports ↗"
+        href="/dashboard/revenue"
       />
     </div>
   );
