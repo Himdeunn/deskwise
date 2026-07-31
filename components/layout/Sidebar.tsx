@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
@@ -14,9 +14,19 @@ import {
   Settings,
   ListOrdered,
   Sparkles,
+  X,
+  Menu,
 } from "lucide-react";
 
-export const Sidebar: React.FC = () => {
+interface SidebarProps {
+  mobileOpen?: boolean;
+  onMobileClose?: () => void;
+}
+
+export const Sidebar: React.FC<SidebarProps> = ({
+  mobileOpen = false,
+  onMobileClose,
+}) => {
   const pathname = usePathname();
   const { data: session } = useSession();
   const role = session?.user?.role;
@@ -24,65 +34,53 @@ export const Sidebar: React.FC = () => {
   const isStaff = role === "SUPER_ADMIN" || role === "ADMIN";
   const isSuperAdmin = role === "SUPER_ADMIN";
 
+  // Close mobile sidebar on route change
+  useEffect(() => {
+    if (onMobileClose) onMobileClose();
+  }, [pathname]); // eslint-disable-line react-hooks/exhaustive-deps
+
   const staffNav = [
-    {
-      name: "Dashboard",
-      href: "/dashboard",
-      icon: LayoutDashboard,
-    },
-    {
-      name: "Daftar Request",
-      href: "/dashboard/orders",
-      icon: ListOrdered,
-    },
+    { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
+    { name: "Daftar Request", href: "/dashboard/orders", icon: ListOrdered },
   ];
 
   if (isSuperAdmin) {
-    staffNav.push({
-      name: "Tim Admin",
-      href: "/dashboard/admin-management",
-      icon: Users,
-    });
+    staffNav.push({ name: "Tim Admin", href: "/dashboard/admin-management", icon: Users });
   }
 
-  staffNav.push({
-    name: "Profil & Pengaturan",
-    href: "/profile",
-    icon: Settings,
-  });
+  staffNav.push({ name: "Profil & Pengaturan", href: "/profile", icon: Settings });
 
   const customerNav = [
-    {
-      name: "Pesanan Saya",
-      href: "/my-orders",
-      icon: ShoppingBag,
-    },
-    {
-      name: "Request Baru",
-      href: "/my-orders/new",
-      icon: PlusCircle,
-    },
-    {
-      name: "Profil & Pengaturan",
-      href: "/profile",
-      icon: Settings,
-    },
+    { name: "Pesanan Saya", href: "/my-orders", icon: ShoppingBag },
+    { name: "Request Baru", href: "/my-orders/new", icon: PlusCircle },
+    { name: "Profil & Pengaturan", href: "/profile", icon: Settings },
   ];
 
   const items = isStaff ? staffNav : customerNav;
 
-  return (
-    <aside className="w-64 shrink-0 bg-white border-r border-slate-100 sticky top-0 h-screen overflow-y-auto p-5 flex flex-col justify-between z-20">
+  const SidebarContent = () => (
+    <div className="flex flex-col h-full justify-between">
       <div className="space-y-6">
-        {/* Brand Logo Header */}
-        <div className="flex items-center gap-3 px-2 pt-1">
-          <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-[#0F3D91] text-white shadow-md shadow-blue-900/20">
-            <Hotel className="h-5 w-5" />
+        {/* Brand Logo */}
+        <div className="flex items-center justify-between px-2 pt-1">
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-[#0F3D91] text-white shadow-md shadow-blue-900/20 shrink-0">
+              <Hotel className="h-5 w-5" />
+            </div>
+            <div>
+              <h2 className="text-lg font-extrabold tracking-tight text-[#0F3D91]">DeskWise</h2>
+              <p className="text-[11px] text-slate-400 font-medium">Hotel Service</p>
+            </div>
           </div>
-          <div>
-            <h2 className="text-lg font-extrabold tracking-tight text-[#0F3D91]">DeskWise</h2>
-            <p className="text-[11px] text-slate-400 font-medium">Hotel Service</p>
-          </div>
+          {/* Close button on mobile */}
+          {onMobileClose && (
+            <button
+              onClick={onMobileClose}
+              className="lg:hidden h-8 w-8 rounded-xl bg-slate-100 text-slate-500 flex items-center justify-center hover:bg-slate-200 transition-colors"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          )}
         </div>
 
         {/* Navigation Items */}
@@ -93,7 +91,6 @@ export const Sidebar: React.FC = () => {
           {items.map((item) => {
             const Icon = item.icon;
             const isActive = pathname === item.href;
-
             return (
               <Link
                 key={item.href}
@@ -105,13 +102,8 @@ export const Sidebar: React.FC = () => {
                     : "text-slate-500 hover:bg-slate-50 hover:text-slate-900"
                 )}
               >
-                <Icon
-                  className={clsx(
-                    "h-5 w-5 transition-transform",
-                    isActive ? "text-white" : "text-slate-400"
-                  )}
-                />
-                <span>{item.name}</span>
+                <Icon className={clsx("h-5 w-5 shrink-0", isActive ? "text-white" : "text-slate-400")} />
+                <span className="truncate">{item.name}</span>
               </Link>
             );
           })}
@@ -121,7 +113,7 @@ export const Sidebar: React.FC = () => {
       {/* Footer Role Card */}
       <div className="p-4 rounded-2xl bg-[#f0f5ff] border border-[#BBD4FF]/50 space-y-1.5">
         <div className="flex items-center gap-2 text-[#1A73E8]">
-          <Sparkles className="h-4 w-4" />
+          <Sparkles className="h-4 w-4 shrink-0" />
           <span className="text-xs font-bold uppercase tracking-wide">Pengguna</span>
         </div>
         <p className="text-xs font-extrabold text-[#0F3D91]">
@@ -131,6 +123,41 @@ export const Sidebar: React.FC = () => {
           {session?.user?.name || "Pengguna DeskWise"}
         </p>
       </div>
-    </aside>
+    </div>
+  );
+
+  return (
+    <>
+      {/* Desktop Sidebar – hidden on mobile */}
+      <aside className="hidden lg:flex w-64 shrink-0 bg-white border-r border-slate-100 sticky top-0 h-screen overflow-y-auto p-5 z-20 flex-col">
+        <SidebarContent />
+      </aside>
+
+      {/* Mobile Sidebar Overlay */}
+      {mobileOpen && (
+        <div className="fixed inset-0 z-40 lg:hidden">
+          {/* Backdrop */}
+          <div
+            className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm"
+            onClick={onMobileClose}
+          />
+          {/* Drawer Panel */}
+          <aside className="absolute left-0 top-0 h-full w-72 max-w-[85vw] bg-white p-5 shadow-2xl overflow-y-auto z-50 flex flex-col">
+            <SidebarContent />
+          </aside>
+        </div>
+      )}
+    </>
   );
 };
+
+// Standalone mobile hamburger trigger component
+export const MobileMenuButton: React.FC<{ onClick: () => void }> = ({ onClick }) => (
+  <button
+    onClick={onClick}
+    className="lg:hidden h-10 w-10 rounded-xl bg-white border border-slate-200/80 shadow-xs text-slate-600 flex items-center justify-center hover:bg-slate-50 transition-colors"
+    aria-label="Buka menu"
+  >
+    <Menu className="h-5 w-5" />
+  </button>
+);

@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { useCreateOrder } from "@/features/orders/hooks/useOrders";
 import { ServiceType } from "@/types/order";
-import { Utensils, Sparkles, Bed, Sparkle, Shirt } from "lucide-react";
+import { AlertCircle } from "lucide-react";
 
 const createOrderSchema = z.object({
   service: z.enum(["RoomService", "Housekeeping", "Laundry", "ExtraBed", "SpaMassage"] as const),
@@ -22,11 +22,31 @@ const createOrderSchema = z.object({
 type NewOrderFormData = z.infer<typeof createOrderSchema>;
 
 const SERVICE_INFO: Record<ServiceType, { title: string; price: string; desc: string }> = {
-  RoomService: { title: "Room Service", price: "Rp 150.000 / set", desc: "Makanan & minuman diantar langsung ke kamar" },
-  Housekeeping: { title: "Housekeeping", price: "Gratis (Complimentary)", desc: "Pembersihan kamar, ganti sprei & handuk" },
-  Laundry: { title: "Laundry & Cuci", price: "Rp 45.000 / paket", desc: "Layanan cuci kilat pakaian & setrika" },
-  ExtraBed: { title: "Extra Bed", price: "Rp 350.000 / unit", desc: "Kasur tambahan beserta selimut bantal" },
-  SpaMassage: { title: "Spa & Traditional Massage", price: "Rp 450.000 / sesi", desc: "Relaksasi pijat dan aromaterapi di kamar" },
+  RoomService: {
+    title: "Room Service",
+    price: "Rp 150.000 / set",
+    desc: "Makanan & minuman diantar langsung ke kamar",
+  },
+  Housekeeping: {
+    title: "Housekeeping",
+    price: "Gratis (Complimentary)",
+    desc: "Pembersihan kamar, ganti sprei & handuk",
+  },
+  Laundry: {
+    title: "Laundry & Cuci",
+    price: "Rp 45.000 / paket",
+    desc: "Layanan cuci kilat pakaian & setrika",
+  },
+  ExtraBed: {
+    title: "Extra Bed",
+    price: "Rp 350.000 / unit",
+    desc: "Kasur tambahan beserta selimut bantal",
+  },
+  SpaMassage: {
+    title: "Spa & Traditional Massage",
+    price: "Rp 450.000 / sesi",
+    desc: "Relaksasi pijat dan aromaterapi di kamar",
+  },
 };
 
 export const NewOrderForm: React.FC = () => {
@@ -62,23 +82,24 @@ export const NewOrderForm: React.FC = () => {
   };
 
   return (
-    <Card className="max-w-xl mx-auto space-y-6">
+    <Card className="w-full max-w-xl mx-auto space-y-6 p-5 sm:p-6">
       <div>
-        <h2 className="text-xl font-bold text-slate-900">Request Layanan Hotel Baru</h2>
-        <p className="text-xs text-slate-500 mt-1">
-          Pilih jenis layanan yang Anda butuhkan. Tim staf hotel akan segera memproses permintaan Anda.
+        <h2 className="text-lg sm:text-xl font-extrabold text-[#0F3D91]">Request Layanan Hotel</h2>
+        <p className="text-xs text-slate-500 font-medium mt-1">
+          Pilih layanan yang Anda butuhkan. Staf hotel akan segera merespons permintaan Anda.
         </p>
       </div>
 
       {errorMessage && (
-        <div className="p-3.5 rounded-lg bg-rose-50 border border-rose-200 text-xs font-medium text-rose-700">
+        <div className="flex items-center gap-2 p-3.5 rounded-2xl bg-rose-50 border border-rose-200 text-xs font-medium text-rose-700">
+          <AlertCircle className="h-4 w-4 shrink-0 text-rose-500" />
           {errorMessage}
         </div>
       )}
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
         <Select
-          label="Pilih Jenis Layanan"
+          label="Jenis Layanan"
           options={[
             { value: "RoomService", label: "Room Service (Makanan & Minuman)" },
             { value: "Housekeeping", label: "Housekeeping & Kebersihan Kamar" },
@@ -91,19 +112,19 @@ export const NewOrderForm: React.FC = () => {
         />
 
         {selectedInfo && (
-          <div className="p-4 bg-sky-50/70 border border-sky-200/80 rounded-xl space-y-1">
-            <div className="flex justify-between items-center text-sm font-semibold text-sky-900">
-              <span>{selectedInfo.title}</span>
-              <span className="text-xs font-bold bg-sky-200/80 px-2 py-0.5 rounded-md text-sky-900">
+          <div className="p-4 bg-[#f0f5ff] border border-[#BBD4FF]/60 rounded-2xl space-y-1">
+            <div className="flex flex-col xs:flex-row xs:items-center justify-between gap-1.5">
+              <span className="font-extrabold text-sm text-[#0F3D91]">{selectedInfo.title}</span>
+              <span className="text-xs font-bold bg-[#BBD4FF]/40 text-[#0F3D91] px-2.5 py-0.5 rounded-full self-start xs:self-auto">
                 {selectedInfo.price}
               </span>
             </div>
-            <p className="text-xs text-sky-700">{selectedInfo.desc}</p>
+            <p className="text-xs text-slate-600">{selectedInfo.desc}</p>
           </div>
         )}
 
         <Input
-          label="Jumlah / Quantity (Pax)"
+          label="Jumlah / Quantity"
           type="number"
           min={1}
           max={20}
@@ -111,33 +132,33 @@ export const NewOrderForm: React.FC = () => {
           {...register("quantity")}
         />
 
-        <div className="space-y-1">
-          <label className="block text-sm font-medium text-slate-700">
-            Catatan Khusus / Special Request (Opsional)
+        <div className="space-y-1.5">
+          <label className="block text-xs font-bold text-slate-700">
+            Catatan Khusus (Opsional)
           </label>
           <textarea
             rows={3}
-            placeholder="contoh: Minta es batu ekstra dan diantar sebelum jam 19.00"
-            className="w-full rounded-lg border border-slate-300 bg-white px-3.5 py-2 text-sm text-slate-900 shadow-xs focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-200"
+            placeholder="Contoh: minta diantar sebelum pukul 19.00, tanpa es batu."
+            className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-xs text-slate-900 font-medium shadow-xs focus:border-[#1A73E8] focus:outline-none focus:ring-2 focus:ring-[#1A73E8]/20 transition resize-none"
             {...register("specialRequest")}
           />
           {errors.specialRequest && (
-            <p className="text-xs text-rose-600">{errors.specialRequest.message}</p>
+            <p className="text-xs text-rose-600 font-medium">{errors.specialRequest.message}</p>
           )}
         </div>
 
-        <div className="flex gap-3 pt-2">
+        <div className="flex flex-col-reverse sm:flex-row gap-3 pt-2">
           <Button
             type="button"
             variant="outline"
-            className="w-1/3"
+            className="w-full sm:w-1/3"
             onClick={() => router.push("/my-orders")}
           >
             Batal
           </Button>
           <Button
             type="submit"
-            className="w-2/3"
+            className="w-full sm:w-2/3"
             isLoading={createOrderMutation.isPending}
           >
             Kirim Permintaan

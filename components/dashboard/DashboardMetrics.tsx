@@ -8,10 +8,14 @@ interface DashboardMetricsProps {
 
 export const DashboardMetrics: React.FC<DashboardMetricsProps> = ({ metrics }) => {
   const formatIDR = (val: number) =>
-    new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", maximumFractionDigits: 0 }).format(val);
+    new Intl.NumberFormat("id-ID", {
+      style: "currency",
+      currency: "IDR",
+      maximumFractionDigits: 0,
+    }).format(val);
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+    <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5">
       <MetricCard
         title="Tamu Menginap"
         value={metrics.totalActiveGuests}

@@ -7,3 +7,13 @@
     @apply bg-[#f8fafc] text-slate-900 antialiased font-sans selection:bg-[#BBD4FF] selection:text-[#0F3D91];
   }
 }
+
+/* Smooth slide-in for mobile sidebar */
+@layer utilities {
+  .sidebar-slide-enter {
+    transform: translateX(-100%);
+  }
+  .sidebar-slide-open {
+    transform: translateX(0);
+  }
+}
