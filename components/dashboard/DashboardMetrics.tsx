@@ -15,30 +15,42 @@ export const DashboardMetrics: React.FC<DashboardMetricsProps> = ({ metrics }) =
     }).format(val);
 
   return (
-    <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5">
+    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
       <MetricCard
-        title="Staying Guests"
+        title="Active Guests"
         value={metrics.totalActiveGuests}
-        subtitle="Guests with active requests"
+        subtitle="Staying in hotel"
         isFeatured={true}
         href="/dashboard/orders"
       />
       <MetricCard
         title="Pending Orders"
         value={metrics.pendingOrdersCount}
-        subtitle="Orders awaiting action"
+        subtitle="Awaiting action"
         href="/dashboard/orders?status=New"
       />
       <MetricCard
         title="SLA Breach (>15m)"
         value={metrics.slaBreachCount}
-        subtitle="Late acknowledgement"
+        subtitle="Late response alert"
         href="/dashboard/orders?status=New"
       />
       <MetricCard
-        title="Today's Revenue"
+        title="Completed Orders"
+        value={metrics.completedOrdersCount}
+        subtitle="Fulfilled orders"
+        href="/dashboard/orders?status=Completed"
+      />
+      <MetricCard
+        title="Revenue Today"
         value={formatIDR(metrics.todayRevenue)}
-        subtitle="View financial reports ↗"
+        subtitle="View reports ↗"
+        href="/dashboard/revenue"
+      />
+      <MetricCard
+        title="Avg. Order Value"
+        value={formatIDR(metrics.avgOrderValue)}
+        subtitle="Average per order"
         href="/dashboard/revenue"
       />
     </div>
